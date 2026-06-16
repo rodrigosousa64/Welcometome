@@ -1,0 +1,134 @@
+<style>
+    .capi-card {
+        background-color: #0d1117;
+        border: 1px dashed #30363d;
+        border-radius: 8px;
+        padding: 25px;
+        max-width: 400px;
+        font-family: 'Courier New', Courier, monospace;
+        color: #c9d1d9;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .capi-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(57, 255, 20, 0.15);
+        border-color: #39ff14;
+    }
+
+    .capi-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #00e5ff, #39ff14);
+    }
+
+    .capi-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        border-bottom: 1px dashed #30363d;
+        padding-bottom: 15px;
+    }
+
+    .capi-logo {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+        margin-right: 15px;
+        border: 2px solid #00e5ff;
+    }
+
+    .capi-title {
+        color: #00e5ff;
+        margin: 0;
+        font-size: 1.4rem;
+        text-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+        font-weight: bold;
+    }
+
+    .capi-subtitle {
+        color: #39ff14;
+        font-size: 0.75rem;
+        font-weight: bold;
+        margin-top: 5px;
+    }
+
+    .capi-body {
+        margin-bottom: 25px;
+        line-height: 1.5;
+        font-size: 0.95rem;
+    }
+
+    .capi-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
+    .capi-tag {
+        background: rgba(88, 166, 255, 0.1);
+        color: #58a6ff;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        border: 1px solid rgba(88, 166, 255, 0.3);
+    }
+
+    .capi-btn {
+        display: block;
+        text-align: center;
+        background-color: transparent;
+        color: #39ff14;
+        padding: 12px 20px;
+        font-size: 1rem;
+        font-weight: bold;
+        text-decoration: none;
+        border: 1px dashed #39ff14;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+    }
+
+    .capi-btn:hover {
+        background-color: #39ff14;
+        color: #0d1117;
+        box-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+        border-style: solid;
+    }
+</style>
+
+<div class="capi-card">
+    <div class="capi-header">
+        <img src="https://capibusque-production.up.railway.app/static/img/capibot.jpg" alt="Capi-busque Logo" class="capi-logo">
+        <div>
+            <h2 class="capi-title">> CAPI_BUSQUE</h2>
+            <div class="capi-subtitle">// Simulador de Cotas e TRI</div>
+        </div>
+    </div>
+    
+    <div class="capi-body">
+        <p style="margin-top: 0;">Descubra sua vaga nas universidades públicas do Pará (UFPA, IFPA, UEPA e UFRA).</p>
+        <p style="color: #8b949e; font-size: 0.85rem; margin-bottom: 0;">Análise estatística de notas de corte baseada em dados reais dos últimos anos.</p>
+    </div>
+
+    <div class="capi-tags">
+        <span class="capi-tag">SISU</span>
+        <span class="capi-tag">ENEM</span>
+        <span class="capi-tag">Cotas</span>
+        <span class="capi-tag">Calculadora TRI</span>
+    </div>
+    
+    <a href="https://capibusque-production.up.railway.app/" target="_blank" class="capi-btn">
+        [ ACESSAR_SISTEMA ]
+    </a>
+</div>
