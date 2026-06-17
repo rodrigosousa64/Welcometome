@@ -105,4 +105,64 @@
     box-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
     border-style: solid;
 }
-
+
+/* Tema Azul (Features Secundárias - Menores e mais apagadas) */
+.capi-card.blue-theme {
+    border-color: rgba(48, 54, 61, 0.4);
+    border-left-color: rgb(88, 141, 255);
+    opacity: 0.75;
+    padding: 12px; /* Menor padding */
+    max-width: 320px; /* Diminui a largura máxima */
+    margin: 0 auto; /* Centraliza no seu espaço de grid */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transform: scale(0.92); /* Reduz o tamanho global visualmente */
+}
+.capi-card.blue-theme:hover {
+    opacity: 1;
+    box-shadow: 0 8px 25px rgba(88, 166, 255, 0.996);
+    border-color: rgb(88, 166, 255);
+    border-left-color: #58a6ff;
+    transform: scale(0.95) translateY(-3px); /* Cresce um pouco no hover */
+}
+.capi-card.blue-theme::before {
+    background: linear-gradient(90deg, rgba(0, 229, 255, 0.1), rgba(88, 166, 255, 0.2));
+}
+.capi-card.blue-theme:hover::before {
+    background: linear-gradient(90deg, #00e5ff, #58a6ff);
+}
+.capi-card.blue-theme .capi-logo {
+    width: 45px;
+    height: 45px;
+    border: 1px solid rgba(88, 166, 255, 0.3);
+    box-shadow: none;
+}
+.capi-card.blue-theme .capi-title {
+    color: rgba(88, 166, 255, 0.8);
+    font-size: 1.15rem; /* Menor que os 1.4rem originais */
+    text-shadow: none;
+}
+.capi-card.blue-theme .capi-subtitle {
+    color: rgba(88, 166, 255, 0.6);
+    font-size: 0.7rem;
+}
+.capi-card.blue-theme .capi-body {
+    font-size: 0.85rem;
+    margin-bottom: 15px;
+    color: rgba(201, 209, 217, 0.8);
+}
+.capi-card.blue-theme .capi-tag {
+    font-size: 0.65rem;
+    padding: 3px 6px;
+    border-color: rgba(88, 166, 255, 0.2);
+}
+.capi-card.blue-theme .capi-btn {
+    color: rgba(88, 166, 255, 0.7);
+    border-color: rgba(88, 166, 255, 0.4);
+    padding: 8px 15px;
+    font-size: 0.85rem;
+}
+.capi-card.blue-theme .capi-btn:hover {
+    background-color: #58a6ff;
+    color: #0d1117;
+    box-shadow: 0 0 10px rgba(88, 166, 255, 0.4);
+}
