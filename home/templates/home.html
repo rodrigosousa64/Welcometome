@@ -2,10 +2,25 @@
 {% load static %}
 
 {% block extra_head %}
-    <link rel="stylesheet" href="{% static 'cardcapibusque.css' %}?v=4">
+    <link rel="stylesheet" href="{% static 'home.css' %}?v=4">
 {% endblock %}
 
 {% block content %}
+
+
+<section id = "Ofensivas">
+    <div class="section-header">
+        <h2>Ofensivas em Andamento</h2>
+        <div id="GitHub">
+            <div class="streak-container">
+                <div class="streak-fire" title="Ofensiva no GitHub">
+                    <span class="streak-number">{{ github_streak|default:"0" }}</span>
+                </div>
+                <span class="streak-label">Ofensiva do GitHub</span>
+            </div>
+        </div>
+    </div>
+</section>
 {% comment %} <header class="hero" id="sobre">
     <div class="hero-content">
         <div class="badge">
