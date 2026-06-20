@@ -1,3 +1,4 @@
 from django.shortcuts import render
 
-# Create your views here.
+def painel_telemetria(request):
+    return render(request, 'Mycontador/painel_telemetria.html')

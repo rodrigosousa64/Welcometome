@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'Mycontador/css/painel_telemetria.css' %}">
+{% endblock %}
+
+    {% block content %}
+    <div class="telemetry-panel">
+        <div class="version-header" id="nawadap-version">NAWADAP --</div>
+        <div class="metrics">
+            <span>Uptime: <span id="days-elapsed">0</span> Days</span>
+            <span>TTL: <span id="days-left">0</span> Days</span>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-fill"></div>
+        </div>
+    </div>
+    <script src="{% static 'Mycontador/js/painel_telemetria.js' %}"></script>
+{% endblock %}

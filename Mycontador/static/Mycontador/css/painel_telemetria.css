@@ -1,0 +1,36 @@
+
+.telemetry-panel {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    font-family: 'Courier New', Courier, monospace;
+    /* Monospaced for technical feel */
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    width: 350px;
+}
+
+
+.metrics {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.progress-container {
+    width: 100%;
+    background-color: #333;
+    border-radius: 4px;
+    height: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #4CAF50;
+    width: 0%;
+    /* Will be set by JavaScript */
+    transition: width 0.5s ease-in-out;
+}
