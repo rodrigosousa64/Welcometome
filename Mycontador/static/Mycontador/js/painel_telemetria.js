@@ -1,5 +1,5 @@
 function updateTelemetry() {
-    const today = new Date('2026-06-20'); // Hardcoded for this example, normally new Date()
+    const today = new Date(); 
     const year = today.getFullYear();
     const month = today.getMonth() + 1; // JS months are 0-11
     const day = today.getDate();
@@ -46,5 +46,22 @@ function updateTelemetry() {
     document.getElementById('progress-fill').style.width = `${percentage}%`;
 }
 
+function updateEnglishCounter() {
+    const today = new Date();
+    // 17/06/2026
+    const startDate = new Date(2026, 5, 17); // Month is 0-indexed in JS (5 is June)
+    
+    // Only count if today is past or equal to start date
+    if (today >= startDate) {
+        const msPerDay = 1000 * 60 * 60 * 24;
+        // Calculate difference in days and floor it
+        const daysElapsed = Math.floor((today - startDate) / msPerDay);
+        document.getElementById('english-streak').innerText = daysElapsed;
+    } else {
+        document.getElementById('english-streak').innerText = '0';
+    }
+}
+
 // Initialize system
 updateTelemetry();
+updateEnglishCounter();

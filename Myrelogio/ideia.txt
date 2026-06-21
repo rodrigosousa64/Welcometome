@@ -1,0 +1,2 @@
+precisamos criar uma aplicativo para o relogio em js , usar o a biblioteca para extrair dados HmSensor ,
+depois fazer um fetch com api que deve ser contruida nesse app do portfolio 

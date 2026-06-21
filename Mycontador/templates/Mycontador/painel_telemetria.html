@@ -2,19 +2,123 @@
 {% load static %}
 
 {% block extra_head %}
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'Mycontador/css/painel_telemetria.css' %}">
 {% endblock %}
 
-    {% block content %}
-    <div class="telemetry-panel">
-        <div class="version-header" id="nawadap-version">NAWADAP --</div>
-        <div class="metrics">
-            <span>Uptime: <span id="days-elapsed">0</span> Days</span>
-            <span>TTL: <span id="days-left">0</span> Days</span>
+{% block content %}
+<main class="dashboard-hub">
+    <!-- HEADER / TOP BANNER -->
+    <header class="hub-header">
+        <h1 class="hub-title">Operational Telemetry Hub</h1>
+        <div class="system-status" id="nawadap-version">
+            NAWADAP --
         </div>
-        <div class="progress-container">
-            <div class="progress-bar" id="progress-fill"></div>
+    </header>
+
+    <!-- SEÇÃO 1: O PÓDIO -->
+    <section class="podium-section">
+        <!-- Card da Esquerda (2º Lugar) -->
+        <article class="podium-card rank-2">
+            <div class="podium-info">
+                <h2 class="habit-name">Imersão em Inglês</h2>
+                <div class="habit-value" id="counter-english">120 <span class="unit">dias</span></div>
+            </div>
+            <div class="progress-track"><div class="progress-fill fill-blue"></div></div>
+        </article>
+        
+        <!-- Card Central (1º Lugar) -->
+        <article class="podium-card rank-1">
+            <div class="podium-info">
+                <h2 class="habit-name">Ofensiva de commits</h2>
+                <div class="habit-value" id="counter-engineering">{{ github_streak }} <span class="unit">dias</span></div>
+            </div>
+            <div class="progress-track"><div class="progress-fill fill-green"></div></div>
+        </article>
+
+        <!-- Card da Direita (3º Lugar) -->
+        <article class="podium-card rank-3">
+            <div class="podium-info">
+                <h2 class="habit-name">Condicionamento Físico</h2>
+                <div class="habit-value" id="counter-fitness">60 <span class="unit">dias</span></div>
+            </div>
+            <div class="progress-track"><div class="progress-fill fill-amber"></div></div>
+        </article>
+    </section>
+
+    <!-- SEÇÃO 2: GRID DE TELEMETRIA -->
+    <section class="telemetry-grid">
+        <article class="telemetry-card">
+            <header class="card-header">
+                <span class="card-title">Início da Faculdade</span>
+                <span class="card-icon material-symbols-outlined">school</span>
+            </header>
+            <div class="card-body">
+                <div class="card-value" id="counter-college">45 <span class="unit-small">dias</span></div>
+            </div>
+            <footer class="card-footer">
+                <div class="mini-metric">Avg. 4h/day</div>
+            </footer>
+        </article>
+
+        <article class="telemetry-card">
+            <header class="card-header">
+                <span class="card-title">Leitura Ativa</span>
+                <span class="card-icon material-symbols-outlined">menu_book</span>
+            </header>
+            <div class="card-body">
+                <div class="card-value" id="counter-reading">12 <span class="unit-small">dias</span></div>
+            </div>
+            <footer class="card-footer">
+                <div class="mini-metric">Avg. 30m/day</div>
+            </footer>
+        </article>
+
+        <article class="telemetry-card">
+            <header class="card-header">
+                <span class="card-title">Frequência de Cardio</span>
+                <span class="card-icon material-symbols-outlined">favorite</span>
+            </header>
+            <div class="card-body">
+                <div class="card-value" id="counter-cardio">5 <span class="unit-small">dias</span></div>
+            </div>
+            <footer class="card-footer">
+                <div class="mini-metric">Avg. 1h/day</div>
+            </footer>
+        </article>
+
+        <article class="telemetry-card">
+            <header class="card-header">
+                <span class="card-title">Projetos C++</span>
+                <span class="card-icon material-symbols-outlined">terminal</span>
+            </header>
+            <div class="card-body">
+                <div class="card-value" id="counter-cpp">8 <span class="unit-small">dias</span></div>
+            </div>
+            <footer class="card-footer">
+                <div class="mini-metric">Avg. 2h/day</div>
+            </footer>
+        </article>
+    </section>
+
+    <!-- SEÇÃO 3: ANALYTIC CORE (Donut Chart Container) -->
+    <section class="analytic-core">
+        <div class="donut-container">
+            <div class="donut-chart"></div>
+            <div class="donut-center">
+                <span class="donut-title">CORE</span>
+            </div>
         </div>
-    </div>
-    <script src="{% static 'Mycontador/js/painel_telemetria.js' %}"></script>
+        <div class="donut-legend">
+            <h3 class="legend-title">Habit Weight / Strength Distribution</h3>
+            <ul class="legend-list">
+                <li><span class="legend-color color-green"></span> Estudos CFrm/Engenharia (45%)</li>
+                <li><span class="legend-color color-blue"></span> Imersão em Inglês (30%)</li>
+                <li><span class="legend-color color-amber"></span> Condicionamento Físico (15%)</li>
+                <li><span class="legend-color color-gray"></span> Outros (10%)</li>
+            </ul>
+        </div>
+    </section>
+</main>
+<script src="{% static 'Mycontador/js/painel_telemetria.js' %}"></script>
 {% endblock %}
