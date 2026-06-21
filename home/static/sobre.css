@@ -1,0 +1,60 @@
+.sobre-section {
+    text-align: center;
+    padding: 4rem 1rem;
+    margin-top: 2rem;
+}
+
+.sobre-card {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--bg-surface-high);
+    border: 1px solid var(--border-color);
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sobre-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(57, 255, 20, 0.1);
+}
+
+.sobre-icon {
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-surface);
+    padding: 10px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    color: #39ff14;
+    font-size: 2rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.sobre-text {
+    color: var(--text-secondary);
+    font-size: 1.15rem;
+    line-height: 1.8;
+}
+
+.sobre-text.margin-bottom {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.sobre-text.no-margin {
+    margin: 0;
+}
+
+.sobre-highlight {
+    color: #39ff14;
+    font-family: var(--font-display);
+}
+
+.sobre-highlight.primary {
+    color: var(--text-primary);
+}

@@ -17,7 +17,10 @@ function updateTelemetry() {
     }
 
     const versionStr = `NAWADAP ${age}${isCycleA ? 'A' : 'B'}`;
-    document.getElementById('nawadap-version').innerText = versionStr;
+    const versionEl = document.getElementById('nawadap-version');
+    if (versionEl) {
+        versionEl.innerText = versionStr;
+    }
 
     // Calculate Days
     let totalDays, startOfCycle, endOfCycle;
@@ -41,9 +44,14 @@ function updateTelemetry() {
     const percentage = (daysElapsed / totalDays) * 100;
 
     // Update DOM Elements
-    document.getElementById('days-elapsed').innerText = daysElapsed;
-    document.getElementById('days-left').innerText = daysRemaining;
-    document.getElementById('progress-fill').style.width = `${percentage}%`;
+    const elDaysElapsed = document.getElementById('days-elapsed');
+    if (elDaysElapsed) elDaysElapsed.innerText = daysElapsed;
+    
+    const elDaysLeft = document.getElementById('days-left');
+    if (elDaysLeft) elDaysLeft.innerText = daysRemaining;
+    
+    const elProgressFill = document.getElementById('progress-fill');
+    if (elProgressFill) elProgressFill.style.width = `${percentage}%`;
 }
 
 function updateEnglishCounter() {
@@ -51,17 +59,41 @@ function updateEnglishCounter() {
     // 17/06/2026
     const startDate = new Date(2026, 5, 17); // Month is 0-indexed in JS (5 is June)
     
+    let daysElapsed = 0;
     // Only count if today is past or equal to start date
     if (today >= startDate) {
         const msPerDay = 1000 * 60 * 60 * 24;
         // Calculate difference in days and floor it
-        const daysElapsed = Math.floor((today - startDate) / msPerDay);
-        document.getElementById('english-streak').innerText = daysElapsed;
-    } else {
-        document.getElementById('english-streak').innerText = '0';
+        daysElapsed = Math.floor((today - startDate) / msPerDay);
+    }
+    
+    const counterElement = document.getElementById('counter-english');
+    console.log("updateEnglishCounter executou! dias: ", daysElapsed, " elemento: ", counterElement);
+    if (counterElement) {
+        counterElement.innerHTML = `${daysElapsed} <span class="unit">dias</span>`;
     }
 }
 
+function updateDailyStudiesCounter() {
+    const today = new Date();
+    // 17/06/2026
+    const startDate = new Date(2025, 11, 13); // Month is 0-indexed in JS (5 is June)
+
+    let daysElapsed = 0;
+    // Only count if today is past or equal to start date
+    if (today >= startDate) {
+        const msPerDay = 1000 * 60 * 60 * 24;
+        // Calculate difference in days and floor it
+        daysElapsed = Math.floor((today - startDate) / msPerDay);
+    }
+
+    const counterElement = document.getElementById('counter-listening');
+    console.log("updateListeningCounter executou! dias: ", daysElapsed, " elemento: ", counterElement);
+    if (counterElement) {
+        counterElement.innerHTML = `${daysElapsed} <span class="unit">dias</span>`;
+    }
+}
 // Initialize system
 updateTelemetry();
 updateEnglishCounter();
+updateDailyStudiesCounter();

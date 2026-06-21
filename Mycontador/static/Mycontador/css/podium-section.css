@@ -1,0 +1,309 @@
+/* ==========================================================================
+   TELEMETRY DASHBOARD - OPERATIONAL HUB
+   Theme: Minimalist, Technical, Muted Tones (Aviation/Monitoring Style)
+   ========================================================================== */
+
+:root {
+    /* Clouding Academy & Home App Colors */
+    --bg-main: #0e0e0e;          /* Base dark */
+    --bg-card: #131313;          /* Surface */
+    --bg-card-hover: #201f1f;    /* Surface High */
+    
+    --text-primary: #ffffff;
+    --text-secondary: #cbc3d7;
+    
+    --border-subtle: rgba(73, 68, 84, 0.25);
+    
+    --primary: #d0bcff;
+    
+    /* Neon Accents from Home */
+    --accent-green: #39ff14;     /* Neon Green */
+    --accent-blue: #00e5ff;      /* Neon Blue */
+    --accent-amber: #ffb869;     /* Accent Orange */
+    --accent-gray: #958ea0;      /* Text Muted */
+    
+    /* Typography */
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+
+body {
+    background-color: var(--bg-main);
+}
+
+/* Base Dashboard Styles */
+.dashboard-hub {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    /* Spacing between main sections */
+    font-family: var(--font-sans);
+    color: var(--text-primary);
+}
+
+/* ==========================================================================
+   HEADER / TOP BANNER
+   ========================================================================== */
+.hub-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: 1.2rem;
+}
+
+.hub-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-primary);
+}
+
+.system-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent-green);
+    background-color: rgba(57, 255, 20, 0.05);
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
+    border: 1px solid rgba(57, 255, 20, 0.2);
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 5px rgba(57, 255, 20, 0.3);
+}
+
+.status-indicator {
+    width: 6px;
+    height: 6px;
+    background-color: var(--accent-green);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--accent-green);
+    animation: blink 2s infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+}
+
+/* ==========================================================================
+   SEÇÃO 1: O PÓDIO
+   ========================================================================== */
+.podium-section {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    /* Bottom alignment for podium effect */
+    gap: 1.5rem;
+    min-height: 220px;
+}
+
+.podium-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 280px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.podium-card:hover {
+    background-color: var(--bg-card-hover);
+    transform: translateY(-5px);
+}
+
+/* Dynamic heights for podium effect */
+.rank-1 {
+    height: 200px;
+    border-top: 4px solid var(--accent-green);
+}
+
+.rank-1:hover {
+    box-shadow: 0 8px 25px rgba(57, 255, 20, 0.15);
+    border-color: var(--accent-green);
+}
+
+.rank-2 {
+    height: 160px;
+    border-top: 4px solid var(--accent-blue);
+}
+
+.rank-2:hover {
+    box-shadow: 0 8px 25px rgba(0, 229, 255, 0.15);
+    border-color: var(--accent-blue);
+}
+
+.rank-3 {
+    height: 160px;
+    border-top: 4px solid var(--accent-amber);
+}
+
+.rank-3:hover {
+    box-shadow: 0 8px 25px rgba(255, 184, 105, 0.15);
+    border-color: var(--accent-amber);
+}
+
+.podium-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.habit-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin: 0;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.habit-value {
+    font-size: 2.25rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.unit {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+
+.progress-track {
+    width: 100%;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.04);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 1rem;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 2px;
+}
+
+.fill-green {
+    width: 80%;
+    background-color: var(--accent-green);
+}
+
+.fill-blue {
+    width: 65%;
+    background-color: var(--accent-blue);
+}
+
+.fill-amber {
+    width: 40%;
+    background-color: var(--accent-amber);
+}
+
+@media (max-width: 768px) {
+    .podium-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+    
+    .podium-card {
+        width: 100%;
+        height: auto !important; /* Overrides rank heights */
+        flex-direction: row;
+        align-items: center;
+        padding: 1rem 1.25rem;
+    }
+
+    .podium-card.rank-1,
+    .podium-card.rank-2,
+    .podium-card.rank-3 {
+        border-top: none;
+        border-left-width: 4px;
+        border-left-style: solid;
+    }
+    
+    .podium-card.rank-1 { border-left-color: var(--accent-green); }
+    .podium-card.rank-2 { border-left-color: var(--accent-blue); }
+    .podium-card.rank-3 { border-left-color: var(--accent-amber); }
+
+    .progress-track {
+        width: 80px;
+        margin-top: 0;
+    }
+
+    .analytic-core {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2rem;
+    }
+}
+@media (max-width: 768px) {
+    .podium-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .podium-card {
+        width: 100%;
+        height: auto !important;
+        /* Overrides rank heights */
+        flex-direction: row;
+        align-items: center;
+        padding: 1rem 1.25rem;
+    }
+
+
+    .podium-card.rank-1,
+    .podium-card.rank-2,
+    .podium-card.rank-3 {
+        border-top: none;
+        border-left-width: 4px;
+        border-left-style: solid;
+    }
+
+    .podium-card.rank-1 {
+        border-left-color: var(--accent-green);
+    }
+
+    .podium-card.rank-2 {
+        border-left-color: var(--accent-blue);
+    }
+
+    .podium-card.rank-3 {
+        border-left-color: var(--accent-amber);
+    }
+
+    .progress-track {
+        width: 80px;
+        margin-top: 0;
+    }
+
+    .analytic-core {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2rem;
+    }
+}
