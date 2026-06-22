@@ -1,0 +1,21 @@
+
+<main class="calendar-page">
+    <div class="calendar-page-header">
+        <div class="badge" style="margin-bottom: 1rem;">
+            <span class="material-symbols-outlined icon-small">calendar_month</span>
+            <span>Planejamento a Longo Prazo</span>
+        </div>
+        <h1>Calendário de <span class="text-gradient">Metas</span></h1>
+        <p>10 Blocos de 12 Semanas (Aproximadamente 3 Meses cada)</p>
+    </div>
+
+    <div class="global-countdown-container" id="global-countdown-container">
+        <h2 id="global-countdown-text">Calculando...</h2>
+        <div id="global-countdown-timer" class="countdown-timer">--d --h --m --s</div>
+    </div>
+
+    <!-- Container onde os blocos serão injetados via JS -->
+    <div id="calendar-blocks-container" class="calendar-grid">
+        <!-- JS irá renderizar o calendário aqui -->
+    </div>
+</main>

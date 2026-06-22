@@ -3,11 +3,14 @@
 
 {% block extra_head %}
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="{% static 'Mycontador/css/painel_telemetria.css' %}">
     <link rel="stylesheet" href="{% static 'Mycontador/css/telemetry-grid.css' %}">
     <link rel="stylesheet" href="{% static 'Mycontador/css/analytic-core.css' %}">
     <link rel="stylesheet" href="{% static 'Mycontador/css/hub-header.css' %}">
     <link rel="stylesheet" href="{% static 'Mycontador/css/podium-section.css' %}">
+    <link rel="stylesheet" href="{% static 'Mycontador/css/calendar.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -15,11 +18,14 @@
     {% include 'Mycontador/hub-header.html' %}
 
     {% include 'Mycontador/podium-section.html' %}
-    {% include 'Mycontador/telemetry-grid.html' %}
-    {% include 'Mycontador/analytic-core.html' %}
+    {% comment %} {% include 'Mycontador/telemetry-grid.html' %} {% endcomment %}
+  
+    {% include 'Mycontador/calendar.html' %}
+      {% include 'Mycontador/analytic-core.html' %}
 
 </main>
-    
+
 <script src="{% static 'Mycontador/js/painel_telemetria.js' %}?v=1.1"></script>
 <script src="{% static 'Mycontador/js/podium.js' %}?v=1.1"></script>
+<script src="{% static 'Mycontador/js/calendar.js' %}?v=1.0"></script>
 {% endblock %}
