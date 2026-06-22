@@ -35,9 +35,10 @@
 
         <!-- MENU DE NAVEGAÇÃO -->
         <nav class="menu-items" style="margin-top: 0;">
-            <div class="item"><a href="#"><span>Página Inicial</span> <small>Resumo e introdução</small></a></div>
-            <div class="item"><a href="#projetos"><span>Projetos</span> <small>Trabalhos recentes</small></a></div>
-            <div class="item"><a href="#contato"><span>Contato</span> <small>Vamos conversar</small></a></div>
+            <div class="item"><a href="{% url 'home' %}"><span>Página Inicial</span> <small>Resumo e introdução</small></a></div>
+            <div class="item"><a href="{% url 'home' %}#projetos"><span>Projetos</span> <small>Trabalhos recentes</small></a></div>
+            <div class="item"><a href="{% url 'home' %}#contato"><span>Contato</span> <small>Vamos conversar</small></a></div>
+            <div class="item"><a href="{% url 'painel_telemetria' %}"><span>Pessoal</span><small>Meus objetivos</small></a></div>
         </nav>
     </aside>
 
@@ -59,6 +60,7 @@
                     <a href="#sobre">Sobre Mim</a>
                     <a href="#projetos">Projetos</a>
                     <a href="#contato">Contato</a>
+                
                    
                     <button class="btn-primary" onclick="window.location.href='#contato'">Fale Comigo</button>
                 </div>
