@@ -16,3 +16,6 @@ def painel_telemetria(request):
         print(f"Error fetching github streak: {e}")
 
     return render(request, 'Mycontador/painel_telemetria.html', {'github_streak': github_streak})
+
+def aniversario(request):
+    return render(request, 'Mycontador/aniversario.html')

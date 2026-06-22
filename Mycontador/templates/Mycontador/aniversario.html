@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'Mycontador/css/calendar.css' %}">
+<style>
+    .birthday-page {
+        padding: 4rem 2rem;
+        text-align: center;
+        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .birthday-header {
+        margin-bottom: 2rem;
+    }
+
+    .birthday-header h1 {
+        font-size: 3rem;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .birthday-header .text-gradient {
+        background: linear-gradient(to right, #ff7eb3, #ff758c);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .birthday-header p {
+        color: var(--text-secondary);
+        font-size: 1.2rem;
+    }
+
+    .global-countdown-container {
+        background: var(--bg-surface-elevated);
+        border: 1px solid #ff758c;
+        box-shadow: 0 4px 30px rgba(255, 117, 140, 0.2);
+        max-width: 600px;
+        width: 100%;
+        padding: 2rem;
+        border-radius: 16px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .global-countdown-container::before {
+        content: '🎉';
+        position: absolute;
+        top: -15px;
+        left: -15px;
+        font-size: 4rem;
+        opacity: 0.2;
+        transform: rotate(-15deg);
+    }
+    
+    .global-countdown-container::after {
+        content: '🎂';
+        position: absolute;
+        bottom: -15px;
+        right: -15px;
+        font-size: 4rem;
+        opacity: 0.2;
+        transform: rotate(15deg);
+    }
+
+    #global-countdown-text {
+        color: #ff758c;
+        font-family: var(--font-display);
+        font-size: 1.3rem;
+    }
+
+    #global-countdown-timer {
+        color: #ff7eb3;
+        text-shadow: 0 0 15px rgba(255, 126, 179, 0.4);
+    }
+    
+    .birthday-decorations {
+        font-size: 2.5rem;
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="birthday-page">
+    <div class="birthday-header">
+        <h1>
+            <span class="birthday-decorations">🎈</span>
+            <span class="text-gradient">Contagem para o Aniversário da Agathinha</span>
+            <span class="birthday-decorations">🎈</span>
+        </h1>
+        <p>Dia 08 de Setembro de 2026</p>
+    </div>
+
+    <div class="global-countdown-container" id="birthday-countdown-container">
+        <h2 id="global-countdown-text">Calculando o tempo...</h2>
+        <div id="global-countdown-timer" class="countdown-timer">--d --h --m --s</div>
+    </div>
+</main>
+
+<!-- Confetti JS -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="{% static 'Mycontador/js/aniversario.js' %}"></script>
+{% endblock %}
