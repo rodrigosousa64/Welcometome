@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<style>
+    .books-section {
+        padding: 4rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .books-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .books-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(to right, var(--primary), #a078ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .books-header p {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+    }
+
+    .books-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 25px;
+        justify-items: center;
+    }
+
+    .book-card {
+        width: 100%;
+        background-color: var(--bg-surface-elevated);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 15px;
+        transition: var(--transition);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .book-card:hover {
+        transform: translateY(-8px);
+        border-color: var(--primary);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 15px var(--primary-dim);
+    }
+
+    .book-cover {
+        width: 100%;
+        aspect-ratio: 2 / 3;
+        background-color: var(--bg-surface-high);
+        border-radius: 8px;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        position: relative;
+    }
+
+    .book-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .book-cover-placeholder {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        font-family: var(--font-mono);
+    }
+
+    .book-title {
+        font-family: var(--font-display);
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.3;
+    }
+
+    /* Animação para o placeholder caso a imagem ainda não exista */
+    @keyframes pulse-book {
+        0%, 100% { opacity: 0.7; }
+        50% { opacity: 0.3; }
+    }
+    .loading-pulse {
+        animation: pulse-book 2s ease-in-out infinite;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="books-section">
+    <div class="books-header">
+        <h1>Meus Livros Lidos</h1>
+        <p>A coleção de leituras e aventuras</p>
+    </div>
+
+    <div class="books-grid">
+
+
+        <!-- Maestria-->
+        <div class="book-card">
+            <div class="book-cover">
+                <img src="https://m.media-amazon.com/images/I/61GodKcYU3L._SY425_.jpg" alt="Capa de Maestria">
+            </div>
+            <h3 class="book-title">Maestria</h3>
+        </div>
+
+        <!-- O Poder do Hábito -->
+        <div class="book-card">
+            <div class="book-cover">
+                <img src="https://m.media-amazon.com/images/I/815iPX0SgkL._SY425_.jpg" alt="Capa de O Poder do Hábito">
+            </div>
+            <h3 class="book-title">O Poder do Hábito</h3>
+        </div>
+
+        <!-- Hábitos Atômicos -->
+        <div class="book-card">
+            <div class="book-cover">
+                <img src="https://m.media-amazon.com/images/I/713PN1USzXL._SY425_.jpg" alt="Capa de Hábitos Atômicos">
+            </div>
+            <h3 class="book-title">Hábitos Atômicos</h3>
+        </div>
+
+        <!-- O Mulato -->
+        <div class="book-card">
+            <div class="book-cover">
+                <img src="https://m.media-amazon.com/images/I/318QZpujB8L._SY445_SX342_ML2_.jpg" alt="Capa de O Mulato">
+            </div>
+            <h3 class="book-title">O Mulato</h3>
+        </div>
+
+        <!-- Como Fazer Amigos e Influenciar Pessoas -->
+        <div class="book-card">
+            <div class="book-cover">
+                <img src="https://m.media-amazon.com/images/I/71x-i7sKSvL._SY425_.jpg" alt="Capa de Como Fazer Amigos e Influenciar Pessoas">
+            </div>
+            <h3 class="book-title">Como Fazer Amigos e Influenciar Pessoas</h3>
+        </div>
+
+        <!-- Deep Work -->
+        <div class="book-card">
+            <div class="book-cover">
+                <img src="https://m.media-amazon.com/images/I/51Cqo-5ErDL._SY445_SX342_ML2_.jpg" alt="Capa de Deep Work">
+            </div>
+            <h3 class="book-title">Deep Work</h3>
+        </div>
+
+        <!-- As Armas da Persuasão -->
+        <div class="book-card">
+            <div class="book-cover">
+                <img src="https://covers.openlibrary.org/b/id/14653926-L.jpg" alt="Capa de As Armas da Persuasão">
+            </div>
+            <h3 class="book-title">As Armas da Persuasão</h3>
+        </div>
+        
+        <!-- Bom Demais para Ser Ignorado -->
+        <div class="book-card">
+            <div class="book-cover">
+                <img src="https://m.media-amazon.com/images/I/71DrfyD70qL._SY425_.jpg" alt="Capa de Bom Demais para Ser Ignorado">
+            </div>
+            <h3 class="book-title">Bom Demais para Ser Ignorado</h3>
+
+            <!-- sutil arte de ligar o foda se -->
+        </div>
+         <div class="book-card">
+            <div class="book-cover">
+                <img src="https://m.media-amazon.com/images/I/6175IU0qFgL._SY425_.jpg" alt="Capa de Bom Demais para Ser Ignorado">
+            </div>
+            <h3 class="book-title">A Sutil Arte de Ligar o F*da-Se</h3>
+        </div>
+
+        <!-- noites brancas -->
+         <div class="book-card">
+            <div class="book-cover">
+                <img src="https://m.media-amazon.com/images/I/71F-Uf20+UL._SY425_.jpg" alt="Capa de Noites Brancas">
+            </div>
+            <h3 class="book-title">Noites Brancas</h3>
+        </div>
+
+        <!-- por lugares incríveis -->
+        <div class="book-card">
+            <div class="book-cover">
+                <img src="https://m.media-amazon.com/images/I/918Maoi6OML._SY425_.jpg" alt="Capa de Por Lugares Incríveis">
+            </div>
+            <h3 class="book-title">Por Lugares Incríveis</h3>
+        </div>
+
+        <!--A cinco passos de você-->
+        <div class="book-card">
+            <div class="book-cover">
+                <img src="https://m.media-amazon.com/images/I/81Q11TuUR3L._SY425_.jpg" alt="Capa de A cinco passos de você">
+            </div>
+            <h3 class="book-title">A cinco passos de você</h3>
+        </div>
+
+        <!--As vantagens de ser invisível-->
+        <div class="book-card">
+            <div class="book-cover">
+                <img src="https://m.media-amazon.com/images/I/81tJ71gMtpL._SY425_.jpg" alt="Capa de As vantagens de ser invisível">
+            </div>
+            <h3 class="book-title">As vantagens de ser invisível</h3>
+        </div>
+    </div>
+
+
+
+
+</div>
+{% endblock %}
