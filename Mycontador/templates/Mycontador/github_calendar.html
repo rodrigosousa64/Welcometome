@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendário de Contribuições — Rodrigo Sousa</title>
+    <meta name="description" content="Calendário de contribuições estilo GitHub para acompanhamento de atividades e hábitos.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="github_calendar.css">
+</head>
+<body>
+
+<div class="bg-bloom"></div>
+
+<div class="page-wrapper">
+
+    <!-- HEADER -->
+    <header class="cal-header">
+        <div class="cal-header-left">
+            <div class="cal-title-row">
+                <div class="cal-icon-box">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </div>
+                <div>
+                    <h1 class="cal-title">Calendário de <span class="text-gradient">Atividades</span></h1>
+                    <p class="cal-subtitle" id="contributions-summary">Calculando contribuições…</p>
+                </div>
+            </div>
+        </div>
+        <div class="cal-header-right">
+            <div class="year-nav">
+                <button class="year-btn" id="btn-prev" aria-label="Ano anterior">&#8592;</button>
+                <span class="year-label" id="year-label">2026</span>
+                <button class="year-btn" id="btn-next" aria-label="Próximo ano">&#8594;</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- CARD PRINCIPAL -->
+    <div class="cal-card">
+        <div class="cal-scroll-wrapper">
+            <div class="cal-inner" id="cal-inner">
+                <!-- Meses e grid gerados via JS -->
+            </div>
+        </div>
+
+        <!-- LEGENDA -->
+        <div class="cal-footer">
+            <a href="#" class="legend-link" id="learn-link">Como os dados são contados</a>
+            <div class="legend-right">
+                <span class="legend-label">Menos</span>
+                <div class="legend-cells">
+                    <div class="cell level-0" title="Sem atividade"></div>
+                    <div class="cell level-1" title="Pouco ativa"></div>
+                    <div class="cell level-2" title="Moderada"></div>
+                    <div class="cell level-3" title="Alta"></div>
+                    <div class="cell level-4" title="Muito alta"></div>
+                </div>
+                <span class="legend-label">Mais</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- STATS RÁPIDAS -->
+    <div class="stats-row">
+        <div class="stat-chip">
+            <span class="stat-icon">🔥</span>
+            <div class="stat-body">
+                <span class="stat-value" id="streak-val">0</span>
+                <span class="stat-name">dias seguidos</span>
+            </div>
+        </div>
+        <div class="stat-chip">
+            <span class="stat-icon">⚡</span>
+            <div class="stat-body">
+                <span class="stat-value" id="total-val">0</span>
+                <span class="stat-name">total no ano</span>
+            </div>
+        </div>
+        <div class="stat-chip">
+            <span class="stat-icon">🏆</span>
+            <div class="stat-body">
+                <span class="stat-value" id="best-val">0</span>
+                <span class="stat-name">melhor dia</span>
+            </div>
+        </div>
+        <div class="stat-chip">
+            <span class="stat-icon">📊</span>
+            <div class="stat-body">
+                <span class="stat-value" id="avg-val">0</span>
+                <span class="stat-name">média semanal</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- TOOLTIP -->
+<div class="cal-tooltip" id="cal-tooltip" role="tooltip" aria-hidden="true"></div>
+
+<script src="github_calendar.js"></script>
+</body>
+</html>

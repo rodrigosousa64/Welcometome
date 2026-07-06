@@ -1,0 +1,483 @@
+/* ============================================================
+   GITHUB CALENDAR — Estética do Projeto Rodrigo Sousa
+   Paleta: Dark #0e0e0e | Primary #d0bcff | Green #7ee787
+   ============================================================ */
+
+:root {
+    --bg-dark:          #0e0e0e;
+    --bg-surface:       #131313;
+    --bg-surface-high:  #201f1f;
+    --bg-elevated:      #1c1b1f;
+
+    --text-primary:     #ffffff;
+    --text-secondary:   #cbc3d7;
+    --text-muted:       #958ea0;
+
+    --primary:          #d0bcff;
+    --primary-hover:    #b18cff;
+    --primary-dim:      rgba(208, 188, 255, 0.12);
+    --primary-border:   rgba(208, 188, 255, 0.25);
+    --primary-glow:     rgba(208, 188, 255, 0.35);
+
+    --green:            #7ee787;
+    --green-dim:        rgba(126, 231, 135, 0.15);
+
+    --border:           rgba(73, 68, 84, 0.3);
+
+    --font-sans:    'Inter', system-ui, -apple-system, sans-serif;
+    --font-display: 'Space Grotesk', system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', monospace;
+
+    --transition:   all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --radius:       12px;
+
+    /* Tamanho das células do calendário */
+    --cell-size: 13px;
+    --cell-gap:  3px;
+}
+
+/* ── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+/* ── Fundo decorativo ──────────────────────────────────────── */
+.bg-bloom {
+    position: fixed;
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80vw;
+    height: 80vw;
+    max-width: 700px;
+    max-height: 700px;
+    background: radial-gradient(
+        circle,
+        rgba(208, 188, 255, 0.07) 0%,
+        rgba(14, 14, 14, 0) 70%
+    );
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* ── Wrapper principal ─────────────────────────────────────── */
+.page-wrapper {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* ── Header ────────────────────────────────────────────────── */
+.cal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.cal-header-left { flex: 1 1 auto; }
+
+.cal-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+}
+
+.cal-icon-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--primary-dim);
+    border: 1px solid var(--primary-border);
+    border-radius: 10px;
+    color: var(--primary);
+    flex-shrink: 0;
+}
+
+.cal-title {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.3px;
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, var(--primary) 0%, #a078ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.cal-subtitle {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+}
+
+/* Navegação de ano */
+.year-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.25rem;
+}
+
+.year-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    transition: var(--transition);
+    line-height: 1;
+}
+
+.year-btn:hover {
+    background: var(--primary-dim);
+    color: var(--primary);
+}
+
+.year-label {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    min-width: 36px;
+    text-align: center;
+}
+
+/* ── Card do calendário ────────────────────────────────────── */
+.cal-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem 1rem;
+    overflow: hidden;
+    position: relative;
+    transition: var(--transition);
+}
+
+.cal-card:hover {
+    border-color: var(--primary-border);
+    box-shadow: 0 0 40px -10px var(--primary-glow);
+}
+
+/* Scroll horizontal no mobile */
+.cal-scroll-wrapper {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+    padding-bottom: 6px;
+}
+
+.cal-scroll-wrapper::-webkit-scrollbar { height: 4px; }
+.cal-scroll-wrapper::-webkit-scrollbar-track { background: transparent; }
+.cal-scroll-wrapper::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+}
+
+.cal-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: max-content;
+}
+
+/* ── Labels dos meses ──────────────────────────────────────── */
+.months-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 0;
+    padding-left: 30px; /* espaço dos labels de dia */
+    margin-bottom: 2px;
+}
+
+.month-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    user-select: none;
+    /* largura definida via JS baseada em quantas semanas o mês tem */
+}
+
+/* ── Grid de células ──────────────────────────────────────── */
+.grid-body {
+    display: flex;
+    gap: 0;
+}
+
+/* Labels dos dias da semana */
+.weekday-labels {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cell-gap);
+    margin-right: 6px;
+    padding-top: 0;
+}
+
+.weekday-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    height: var(--cell-size);
+    line-height: var(--cell-size);
+    width: 24px;
+    text-align: right;
+    user-select: none;
+}
+
+/* Colunas de semana */
+.weeks-container {
+    display: flex;
+    gap: var(--cell-gap);
+}
+
+.week-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cell-gap);
+}
+
+/* ── Células individuais ───────────────────────────────────── */
+.cell {
+    width: var(--cell-size);
+    height: var(--cell-size);
+    border-radius: 3px;
+    cursor: default;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    flex-shrink: 0;
+}
+
+/* Célula vazia (padding no início do ano) */
+.cell.empty {
+    background: transparent;
+    cursor: default;
+    pointer-events: none;
+}
+
+/* Níveis de intensidade (escala verde, como o GitHub) */
+.cell.level-0 { background: var(--bg-surface-high, #1e1e1e); }
+.cell.level-1 { background: #1a4220; }
+.cell.level-2 { background: #226227; }
+.cell.level-3 { background: #2ea043; }
+.cell.level-4 { background: #7ee787; }
+
+/* Destaque — hoje */
+.cell.today {
+    outline: 2px solid var(--primary);
+    outline-offset: 1px;
+}
+
+/* Hover interativo */
+.cell:not(.empty):hover {
+    transform: scale(1.35);
+    box-shadow: 0 0 8px rgba(126, 231, 135, 0.6);
+    z-index: 10;
+    position: relative;
+}
+
+/* ── Rodapé / legenda ──────────────────────────────────────── */
+.cal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+}
+
+.legend-link {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: var(--transition);
+}
+.legend-link:hover { color: var(--primary); }
+
+.legend-right {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.legend-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+.legend-cells {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+}
+
+.legend-cells .cell {
+    width: 12px;
+    height: 12px;
+    cursor: default;
+}
+.legend-cells .cell:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* ── Stats chips ───────────────────────────────────────────── */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+}
+
+.stat-chip {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.9rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: var(--transition);
+    cursor: default;
+}
+
+.stat-chip:hover {
+    border-color: var(--primary-border);
+    background: var(--bg-elevated);
+    transform: translateY(-2px);
+}
+
+.stat-icon { font-size: 1.4rem; flex-shrink: 0; }
+
+.stat-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+}
+
+.stat-value {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1;
+}
+
+.stat-name {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+/* ── Tooltip ────────────────────────────────────────────────── */
+.cal-tooltip {
+    position: fixed;
+    background: var(--bg-elevated);
+    border: 1px solid var(--primary-border);
+    border-radius: 8px;
+    padding: 0.45rem 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    z-index: 9999;
+    white-space: nowrap;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    max-width: 220px;
+}
+
+.cal-tooltip.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.cal-tooltip strong {
+    color: var(--green);
+    font-weight: 700;
+}
+
+/* ── Animação de entrada ────────────────────────────────────── */
+@keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.cal-card   { animation: fadeSlideIn 0.4s ease both; }
+.cal-header { animation: fadeSlideIn 0.3s ease both; }
+.stats-row  { animation: fadeSlideIn 0.5s 0.1s ease both; }
+
+/* ── Responsividade ─────────────────────────────────────────── */
+
+/* Tablet */
+@media (max-width: 768px) {
+    body { padding: 1.25rem 0.75rem; }
+
+    .cal-title { font-size: 1.15rem; }
+
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+
+    :root { --cell-size: 11px; --cell-gap: 2.5px; }
+}
+
+/* Mobile pequeno */
+@media (max-width: 480px) {
+    body { padding: 1rem 0.5rem; }
+
+    .cal-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cal-card { padding: 1rem; }
+
+    .stats-row { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+
+    .stat-chip { padding: 0.75rem 0.85rem; }
+
+    .stat-value { font-size: 1.15rem; }
+
+    :root { --cell-size: 10px; --cell-gap: 2px; }
+
+    .cal-footer { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
+}
+
+/* Scroll customizado para webkit no mobile */
+@media (max-width: 600px) {
+    .cal-scroll-wrapper::-webkit-scrollbar { height: 3px; }
+}

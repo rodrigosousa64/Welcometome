@@ -1,29 +1,49 @@
-    <!-- SEÇÃO 1: O PÓDIO -->
-    <section class="podium-section">
-        <!-- Card da Esquerda (2º Lugar) -->
-        <article class="podium-card rank-2">
-            <div class="podium-info">
-                <h2 class="habit-name">Shadowing diário</h2>
-                <div class="habit-value" id="counter-english">0<span class="unit">dias</span></div>
-            </div>
-            <div class="progress-track"><div class="progress-fill fill-blue"></div></div>
-        </article>
-        
-        <!-- Card Central (1º Lugar) -->
-        <article class="podium-card rank-1">
-            <div class="podium-info">
-                <h2 class="habit-name">Ofensiva de commits</h2>
-                <div class="habit-value" id="counter-engineering">{{ github_streak }} <span class="unit">dias</span></div>
-            </div>
-            <div class="progress-track"><div class="progress-fill fill-green"></div></div>
-        </article>
+<!-- PÓDIO SIMPLIFICADO — ordenado por maior streak -->
+<section class="podium-section">
 
-        <!-- Card da Direita (3º Lugar) -->
-        <article class="podium-card rank-3">
-            <div class="podium-info">
-                <h2 class="habit-name">Listening diário</h2>
-                <div class="habit-value" id="counter-listening">0 <span class="unit">dias</span></div>
+    <!-- 1º — Listening em inglês (maior streak) -->
+    <article class="podium-chip rank-1" data-counter-id="listening">
+        <div class="podium-chip-left">
+            <span class="podium-rank-badge">01</span>
+            <div>
+                <div class="podium-chip-name">Listening em inglês</div>
+                <div class="podium-chip-meta">desde 13/12/2025</div>
             </div>
-            <div class="progress-track"><div class="progress-fill fill-amber"></div></div>
-        </article>
-    </section>
+        </div>
+        <div class="podium-chip-right">
+            <div class="podium-chip-value" id="counter-listening">0 <span class="podium-unit">dias</span></div>
+            <div class="podium-mini-heatmap" id="hm-listening"></div>
+        </div>
+    </article>
+
+    <!-- 2º — Ofensiva de commits -->
+    <article class="podium-chip rank-2" data-counter-id="engineering">
+        <div class="podium-chip-left">
+            <span class="podium-rank-badge">02</span>
+            <div>
+                <div class="podium-chip-name">Ofensiva de commits</div>
+                <div class="podium-chip-meta">streak contínuo</div>
+            </div>
+        </div>
+        <div class="podium-chip-right">
+            <div class="podium-chip-value">{{ github_streak }} <span class="podium-unit">dias</span></div>
+            <div class="podium-mini-heatmap" id="hm-engineering" data-streak="{{ github_streak }}"></div>
+        </div>
+    </article>
+
+    <!-- 3º — Shadowing diário -->
+    <article class="podium-chip rank-3" data-counter-id="english">
+        <div class="podium-chip-left">
+            <span class="podium-rank-badge">03</span>
+            <div>
+                <div class="podium-chip-name">Shadowing diário</div>
+                <div class="podium-chip-meta">desde 17/06/2026</div>
+            </div>
+        </div>
+        <div class="podium-chip-right">
+            <div class="podium-chip-value" id="counter-english">0 <span class="podium-unit">dias</span></div>
+            <div class="podium-mini-heatmap" id="hm-english"></div>
+        </div>
+    </article>
+
+</section>
