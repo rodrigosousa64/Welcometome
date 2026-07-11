@@ -104,6 +104,26 @@
     .loading-pulse {
         animation: pulse-book 2s ease-in-out infinite;
     }
+
+    /* Responsividade para dispositivos móveis (2 a 3 cards por linha) */
+    @media (max-width: 600px) {
+        .books-section {
+            padding: 2rem 1rem;
+        }
+        .books-grid {
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 12px;
+        }
+        .book-card {
+            padding: 10px;
+        }
+        .book-title {
+            font-size: 0.85rem;
+        }
+        .books-header h1 {
+            font-size: 2rem;
+        }
+    }
 </style>
 {% endblock %}
 
