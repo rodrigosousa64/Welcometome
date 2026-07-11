@@ -33,9 +33,9 @@ body {
 
 /* Base Dashboard Styles */
 .dashboard-hub {
-    max-width: 1100px;
+    max-width: 1600px;
     margin: 0 auto;
-    padding: 2rem 1.5rem;
+    padding: 2rem 3rem;
     display: flex;
     flex-direction: column;
     gap: 3rem; /* Spacing between main sections */

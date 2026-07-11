@@ -293,9 +293,9 @@ a:hover {
 }
 
 .nav-container {
-    max-width: 1200px;
+    max-width: 1600px;
     margin: 0 auto;
-    padding: 1rem 2rem;
+    padding: 1rem 3rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -453,7 +453,8 @@ button {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
-    max-width: 1200px;
+    max-width: 1600px;
+    padding: 0 3rem;
     margin: 0 auto;
 }
 
