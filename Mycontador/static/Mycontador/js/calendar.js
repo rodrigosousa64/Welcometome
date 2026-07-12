@@ -122,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if(!box.classList.contains('completed')) {
                     box.classList.add('completed');
                     box.classList.remove('current-week');
+                    box.innerHTML = '';
                 }
             } else if (now >= wStart && now <= wEnd) {
                 // Semana atual (em andamento)
@@ -129,10 +130,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     box.classList.add('current-week');
                     box.classList.remove('completed');
                 }
+                // Adiciona contador de dias percorridos (de 1 a 7)
+                const daysPassed = Math.floor((now - wStart) / (1000 * 60 * 60 * 24)) + 1;
+                const displayDay = Math.min(daysPassed, 7); // Garante que não passe de 7
+                box.innerHTML = `<span class="week-days-left">${displayDay}d</span>`;
             } else {
                 // Semana futura
                 box.classList.remove('completed');
                 box.classList.remove('current-week');
+                if(box.innerHTML !== '') box.innerHTML = '';
             }
         });
     }
