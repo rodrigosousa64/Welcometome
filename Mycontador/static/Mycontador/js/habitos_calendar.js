@@ -37,17 +37,11 @@ const HABITOS = [
         startDate: new Date(2025, 11, 13), // 13/12/2025
     },
     {
-        id:        'cfrm',
-        name:      'Estudos para o CFRM',
-        desc:      'Contador de dias com estudos ativos para o CFRM',
-        startDate: new Date(2026, 6, 2),   // 02/07/2026
-    },
-    {
-        id:        'livros-tecnologia',
-        name:      'Lendo livros de tecnologia',
-        desc:      'Livro do momento: Redes de Computadores — Andrew Tanenbaum',
-        startDate: new Date(2026, 6, 3),   // 03/07/2026
-    },
+        id:        'Mandarin',
+        name:      'Learning Mandarin',
+        desc:      'Rotina de Mandarin diário desde 13/07/2026',
+        startDate: new Date(2026, 6, 13), // 13/07/2026
+    }
 ];
 
 /* ════════════════════════════════════════════════════════════
