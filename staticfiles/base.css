@@ -43,6 +43,10 @@ html {
 
 body {
     background-color: var(--bg-dark);
+    background-image: url('backgroud3.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     color: var(--text-primary);
     font-family: var(--font-sans);
     line-height: 1.6;
