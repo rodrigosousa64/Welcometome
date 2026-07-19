@@ -1,9 +1,9 @@
 :root {
     /* Cores principais baseadas no Clouding Academy */
-    --bg-dark: #0e0e0e;
-    --bg-surface: #131313;
-    --bg-surface-high: #201f1f;
-    --bg-surface-elevated: #2a2a2a;
+    --bg-dark: #000000;
+    --bg-surface: #000000;
+    --bg-surface-high: #000000a3;
+    --bg-surface-elevated: #00000020;
     
     --text-primary: #ffffff;
     --text-secondary: #cbc3d7;
