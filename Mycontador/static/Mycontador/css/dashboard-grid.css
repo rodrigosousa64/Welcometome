@@ -1,4 +1,43 @@
 /* ==========================================================================
+   ANIMAÇÕES DE ENTRADA — FADE-IN ESCALONADO POR SEÇÃO
+   ========================================================================== */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Cada seção entra com fade + slide suave */
+.hub-header,
+.podium-section,
+.habitos-section,
+.calendar-page {
+    animation: fadeInUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Delays escalonados: header → pódio → hábitos → calendário */
+.hub-header        { animation-delay: 0.05s; }
+.podium-section    { animation-delay: 0.18s; }
+.habitos-section   { animation-delay: 0.31s; }
+.calendar-page     { animation-delay: 0.44s; }
+
+/* Respeita preferência de acessibilidade (sem animação) */
+@media (prefers-reduced-motion: reduce) {
+    .hub-header,
+    .podium-section,
+    .habitos-section,
+    .calendar-page {
+        animation: none;
+    }
+}
+
+/* ==========================================================================
    SEÇÃO 2: GRID DE TELEMETRIA
    ========================================================================== */
 .telemetry-grid {
