@@ -18,31 +18,8 @@
 
 'use strict';
 
-/* ════════════════════════════════════════════════════════════
-   CONFIGURAÇÃO DOS HÁBITOS
-   Cada objeto representa um contador do projeto.
-   startDate: new Date(ano, mês-1, dia)  ← mês começa em 0!
-   ════════════════════════════════════════════════════════════ */
-const HABITOS = [
-    {
-        id:        'english',
-        name:      'Shadowing diário',
-        desc:      'Prática diária de shadowing para fluência em inglês',
-        startDate: new Date(2026, 5, 17),  // 17/06/2026
-    },
-    {
-        id:        'listening',
-        name:      'Listening em inglês',
-        desc:      'Rotina de listening diário em inglês desde Dezembro de 2025',
-        startDate: new Date(2025, 11, 13), // 13/12/2025
-    },
-    {
-        id:        'Mandarin',
-        name:      'Learning Mandarin',
-        desc:      'Rotina de Mandarin diário desde 13/07/2026',
-        startDate: new Date(2026, 6, 13), // 13/07/2026
-    }
-];
+
+
 
 /* ════════════════════════════════════════════════════════════
    CONSTANTES
@@ -323,25 +300,50 @@ function buildHabitoCard(habito) {
 }
 
 /* ════════════════════════════════════════════════════════════
-   MOUNT — injeta os cards no DOM
+   MOUNT — busca dados da API e injeta os cards no DOM
    ════════════════════════════════════════════════════════════ */
-function mountHabitosCalendar() {
+async function mountHabitosCalendar() {
     // Cria tooltip global
     createTooltip();
 
-    // Encontra o container alvo (o section do habitos.html)
+    // Encontra o container alvo
     const container = document.getElementById('habitos-calendar-grid');
     if (!container) {
         console.warn('[habitos_calendar.js] Container #habitos-calendar-grid não encontrado.');
         return;
     }
 
-    container.innerHTML = '';
+    // Mostra estado de carregamento
+    container.innerHTML = '<p style="color:var(--text-muted,#888);padding:1rem;">Carregando hábitos…</p>';
 
-    HABITOS.forEach(h => {
-        const card = buildHabitoCard(h);
-        container.appendChild(card);
-    });
+    try {
+        // ── Busca os hábitos do backend Django ──────────────────
+        const response = await fetch('/pessoal/api/habitos/');
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        /** @type {Array<{id:string, name:string, desc:string, startDate:string}>} */
+        const habitos = await response.json();
+
+        // Converte a string ISO 'YYYY-MM-DD' → objeto Date
+        // 'T12:00:00' garante que o fuso horário local não mude o dia
+        const HABITOS = habitos.map(h => ({
+            ...h,
+            startDate: new Date(h.startDate + 'T12:00:00'),
+        }));
+
+        // Limpa loading e renderiza os cards
+        container.innerHTML = '';
+        HABITOS.forEach(h => {
+            const card = buildHabitoCard(h);
+            container.appendChild(card);
+        });
+
+    } catch (err) {
+        console.error('[habitos_calendar.js] Erro ao buscar hábitos:', err);
+        container.innerHTML = `<p style="color:#f87171;padding:1rem;">Erro ao carregar hábitos: ${err.message}</p>`;
+    }
 }
 
 /* ── Init ──────────────────────────────────────────────────── */
@@ -350,3 +352,4 @@ if (document.readyState === 'loading') {
 } else {
     mountHabitosCalendar();
 }
+
