@@ -1,0 +1,45 @@
+/* ==========================================================================
+   TELEMETRY DASHBOARD - OPERATIONAL HUB
+   Theme: Minimalist, Technical, Muted Tones (Aviation/Monitoring Style)
+   ========================================================================== */
+
+:root {
+    /* Clouding Academy & Home App Colors */
+    --bg-main: #0e0e0e;          /* Base dark */
+    --bg-card: #131313;          /* Surface */
+    --bg-card-hover: #201f1f;    /* Surface High */
+    
+    --text-primary: #ffffff;
+    --text-secondary: #cbc3d7;
+    
+    --border-subtle: rgba(73, 68, 84, 0.25);
+    
+    --primary: #d0bcff;
+    
+    /* Neon Accents from Home */
+    --accent-green: #39ff14;     /* Neon Green */
+    --accent-blue: #00e5ff;      /* Neon Blue */
+    --accent-amber: #ffb869;     /* Accent Orange */
+    --accent-gray: #958ea0;      /* Text Muted */
+    
+    /* Typography */
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+
+body {
+    background-color: var(--bg-main);
+}
+
+/* Base Dashboard Styles */
+.dashboard-hub {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 2rem 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem; /* Spacing between main sections */
+    font-family: var(--font-sans);
+    color: var(--text-primary);
+}
+

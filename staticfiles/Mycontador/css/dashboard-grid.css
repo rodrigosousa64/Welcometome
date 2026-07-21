@@ -1,0 +1,116 @@
+/* ==========================================================================
+   ANIMAÇÕES DE ENTRADA — FADE-IN ESCALONADO POR SEÇÃO
+   ========================================================================== */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Cada seção entra com fade + slide suave */
+.hub-header,
+.podium-section,
+.habitos-section,
+.calendar-page {
+    animation: fadeInUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Delays escalonados: header → pódio → hábitos → calendário */
+.hub-header        { animation-delay: 0.05s; }
+.podium-section    { animation-delay: 0.18s; }
+.habitos-section   { animation-delay: 0.31s; }
+.calendar-page     { animation-delay: 0.44s; }
+
+/* Respeita preferência de acessibilidade (sem animação) */
+@media (prefers-reduced-motion: reduce) {
+    .hub-header,
+    .podium-section,
+    .habitos-section,
+    .calendar-page {
+        animation: none;
+    }
+}
+
+/* ==========================================================================
+   SEÇÃO 2: GRID DE TELEMETRIA
+   ========================================================================== */
+.telemetry-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+}
+
+.telemetry-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.telemetry-card:hover {
+    background-color: var(--bg-card-hover);
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    box-shadow: 0 8px 25px rgba(208, 188, 255, 0.15);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.card-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    max-width: 80%;
+}
+
+.card-icon {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    opacity: 0.6;
+}
+
+.card-body {
+    display: flex;
+    align-items: baseline;
+}
+
+.card-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--text-primary);
+}
+
+.unit-small {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+
+.card-footer {
+    border-top: 1px dashed var(--border-subtle);
+    padding-top: 0.75rem;
+}
+
+.mini-metric {
+    font-size: 0.75rem;
+    color: var(--accent-gray);
+    font-family: var(--font-mono);
+}

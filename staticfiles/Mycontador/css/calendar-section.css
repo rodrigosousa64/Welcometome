@@ -1,0 +1,252 @@
+/* ============================================================
+   CALENDAR CSS — Estilo Heatmap GitHub
+   Mantém todos os hooks JS: .completed, .current-week,
+   .auto-week, .block-countdown, .calendar-block, etc.
+   ============================================================ */
+
+/* ── Container global ──────────────────────────────────────── */
+.calendar-page {
+    padding: 1.5rem 0 2rem;
+}
+
+/* Countdown global */
+.global-countdown-container {
+    background: var(--bg-surface-elevated, #2a2a2a);
+    border: 1px solid var(--border-color, rgba(73,68,84,.25));
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    margin: 0 auto 1.5rem auto;
+    max-width: 700px;
+    text-align: center;
+}
+
+.global-countdown-container h2 {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-family: var(--font-mono);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.global-countdown-container .countdown-timer {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-shadow: 0 0 12px rgba(208,188,255,0.3);
+}
+
+/* ── Grid de blocos (Agora um painel unificado) ────────────────────────────────────────── */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(160px, 1fr));
+    gap: 20px;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: var(--bg-surface-elevated, #2a2a2a);
+    border: 1px solid var(--border-color, rgba(73,68,84,.25));
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    
+    /* Permite rolagem horizontal (swipe) no celular sem quebrar os 5 blocos */
+    overflow-x: auto;
+    /* Custom scrollbar para melhor UX no desktop */
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) transparent;
+}
+
+/* ── Bloco individual (card de 12 semanas) ─────────────────── */
+.calendar-block {
+    background: var(--bg-surface-high, #201f1f);
+    border: 1px solid rgba(255,255,255,0.03);
+    border-radius: 10px;
+    padding: 16px;
+    transition: var(--transition, all .3s ease);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-block:hover {
+    border-color: var(--primary-border, rgba(208,188,255,.3));
+    background: rgba(208, 188, 255, 0.02);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
+}
+
+/* ── Header do bloco ───────────────────────────────────────── */
+.block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--border-color, rgba(73,68,84,.25));
+}
+
+.block-header h3 {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 0;
+}
+
+.block-subtitle {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--text-muted, #958ea0);
+    line-height: 1.3;
+}
+
+/* ── Grid de semanas (4 colunas × 3 linhas = 12 células) ───── */
+.weeks-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+}
+
+/* Item: label da semana + célula */
+.week-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+}
+
+.week-number {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    color: var(--text-muted, #958ea0);
+    font-weight: 600;
+    line-height: 1;
+    user-select: none;
+}
+
+/* ── Célula da semana — estilo heatmap ─────────────────────── */
+.week-box {
+    width: 100%;
+    aspect-ratio: 1.4 / 1;
+    border-radius: 4px;
+    border: 1px solid var(--border-color, rgba(73,68,84,.25));
+    background: var(--bg-surface-elevated, #2a2a2a);
+    transition: transform .12s ease, box-shadow .12s ease;
+    cursor: default;
+    position: relative;
+    /* Flexbox para centralizar o contador de dias */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.week-days-left {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--primary);
+    pointer-events: none;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+
+/* Semana futura (padrão) — já coberta acima */
+
+/* Semana CONCLUÍDA — verde heatmap */
+.week-box.completed {
+    background: #7ee787;
+    border-color: #7ee787;
+    box-shadow: 0 0 8px rgba(126,231,135,0.25);
+}
+
+/* Semana ATUAL — pulse roxo */
+.week-box.current-week {
+    background: var(--primary-dim, rgba(208,188,255,.12));
+    border-color: var(--primary);
+    box-shadow: 0 0 10px rgba(208,188,255,0.35);
+    animation: cal-pulse 2s infinite;
+}
+
+@keyframes cal-pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(208,188,255,0.4); }
+    70%  { box-shadow: 0 0 0 6px rgba(208,188,255,0); }
+    100% { box-shadow: 0 0 0 0 rgba(208,188,255,0); }
+}
+
+/* Hover nas semanas (concluídas e atual) */
+.week-box.completed:hover,
+.week-box.current-week:hover {
+    transform: scale(1.15);
+}
+
+/* ── Countdown do bloco ────────────────────────────────────── */
+.block-countdown {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border-color, rgba(73,68,84,.25));
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-muted, #958ea0);
+    text-align: center;
+    line-height: 1.4;
+}
+
+.block-countdown span {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.block-countdown.active {
+    color: var(--accent-green, #7ee787);
+}
+.block-countdown.active span {
+    color: var(--accent-green, #7ee787);
+}
+
+.block-countdown.finished {
+    color: var(--text-muted, #958ea0);
+}
+
+/* ── Responsividade ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .calendar-grid {
+        /* Mantém as 5 colunas, reduz gap e padding */
+        gap: 12px;
+        padding: 1rem;
+    }
+
+    .calendar-block {
+        padding: 10px;
+    }
+
+    .block-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+        margin-bottom: 8px;
+        padding-bottom: 6px;
+    }
+
+    .block-header h3  { font-size: 0.8rem; }
+    .block-subtitle   { font-size: 0.55rem; }
+
+    .weeks-grid { gap: 4px; }
+    .week-number { font-size: 0.5rem; }
+}
+
+@media (max-width: 420px) {
+    .calendar-grid {
+        /* Permite que o bloco encolha um pouco mais no celular antes do scroll */
+        grid-template-columns: repeat(5, minmax(130px, 1fr));
+        padding: 0.75rem;
+    }
+
+    .weeks-grid {
+        /* Mantém as semanas em 4 colunas */
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
