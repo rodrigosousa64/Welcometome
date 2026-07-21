@@ -16,18 +16,18 @@
 
 {% block content %}
 <main class="dashboard-hub">
-    {% include 'Mycontador/hub-header.html' %}
+    {% include 'Mycontador/partials/header-section.html' %}
 
-    {% include 'Mycontador/podium-section.html' %}
-    {% include 'Mycontador/habitos.html' %}
+    {% include 'Mycontador/partials/podium-section.html' %}
+    {% include 'Mycontador/partials/habitos-section.html' %}
     {% comment %} {% include 'Mycontador/telemetry-grid.html' %} {% endcomment %}
   
-    {% include 'Mycontador/calendar.html' %}
-      {% comment %} {% include 'Mycontador/analytic-core.html' %} {% endcomment %}
+    {% include 'Mycontador/partials/calendar-section.html' %}
+      {% comment %} {% include 'Mycontador/partials/analytics-section.html' %} {% endcomment %}
 
 </main>
 
-<script src="{% static 'Mycontador/js/painel_telemetria.js' %}?v=1.1"></script>
+<script src="{% static 'Mycontador/js/cycle-telemetry.js' %}?v=1.1"></script>
 <script src="{% static 'Mycontador/js/podium.js' %}?v=1.1"></script>
 <script src="{% static 'Mycontador/js/calendar.js' %}?v=1.0"></script>
 <script src="{% static 'Mycontador/js/habitos_calendar.js' %}?v=1.1"></script>
