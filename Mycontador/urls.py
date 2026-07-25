@@ -6,4 +6,5 @@ urlpatterns = [
 
     path('aniversario/', views.aniversario, name='aniversario'),
     path('api/habitos/', views.api_habitos, name='api_habitos'),
+    path('api/calendario/', views.api_calendario, name='api_calendario'),
 ]

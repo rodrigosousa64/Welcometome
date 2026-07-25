@@ -1,29 +1,58 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const container = document.getElementById('calendar-blocks-container');
     if (!container) return;
 
-    // Dados com datas reais dos blocos
-    const blocksData = [
-        { title: 'Block 1', start: '2026-07-11T00:00:00', end: '2026-10-02T23:59:59', labelStart: '11 de Julho, 2026', labelEnd: '02 de Outubro, 2026' },
-        { title: 'Block 2', start: '2026-10-03T00:00:00', end: '2026-12-25T23:59:59', labelStart: '03 de Outubro, 2026', labelEnd: '25 de Dezembro, 2026' },
-        { title: 'Block 3', start: '2026-12-26T00:00:00', end: '2027-03-19T23:59:59', labelStart: '26 de Dezembro, 2026', labelEnd: '19 de Março, 2027' },
-        { title: 'Block 4', start: '2027-03-20T00:00:00', end: '2027-06-11T23:59:59', labelStart: '20 de Março, 2027', labelEnd: '11 de Junho, 2027' },
-        { title: 'Block 5', start: '2027-06-12T00:00:00', end: '2027-09-03T23:59:59', labelStart: '12 de Junho, 2027', labelEnd: '03 de Setembro, 2027' },
-        { title: 'Block 6', start: '2027-09-04T00:00:00', end: '2027-11-26T23:59:59', labelStart: '04 de Setembro, 2027', labelEnd: '26 de Novembro, 2027' },
-        { title: 'Block 7', start: '2027-11-27T00:00:00', end: '2028-02-18T23:59:59', labelStart: '27 de Novembro, 2027', labelEnd: '18 de Fevereiro, 2028' },
-        { title: 'Block 8', start: '2028-02-19T00:00:00', end: '2028-05-12T23:59:59', labelStart: '19 de Fevereiro, 2028', labelEnd: '12 de Maio, 2028' },
-        { title: 'Block 9', start: '2028-05-13T00:00:00', end: '2028-08-04T23:59:59', labelStart: '13 de Maio, 2028', labelEnd: '04 de Agosto, 2028' },
-        { title: 'Block 10', start: '2028-08-05T00:00:00', end: '2028-10-27T23:59:59', labelStart: '05 de Agosto, 2028', labelEnd: '27 de Outubro, 2028' }
-    ];
+    container.innerHTML = '<p style="color:var(--text-muted,#888);padding:1rem;">Carregando blocos...</p>';
 
-    const weeksPerBlock = 12;
+    let blocksData = [];
+    try {
+        const response = await fetch('/pessoal/api/calendario/');
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        
+        const monthNames = [
+            'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+            'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+        ];
+        
+        function formatDateLabel(dateString) {
+            if (!dateString) return '';
+            // Ajusta string para forçar timezone correto se necessário
+            const d = new Date(dateString);
+            const day = String(d.getDate()).padStart(2, '0');
+            const month = monthNames[d.getMonth()];
+            const year = d.getFullYear();
+            return `${day} de ${month}, ${year}`;
+        }
+        
+        blocksData = data.map(item => ({
+            title: item.title,
+            start: item.start,
+            end: item.end,
+            weeksPerBlock: item.weeks,
+            labelStart: formatDateLabel(item.start),
+            labelEnd: formatDateLabel(item.end)
+        }));
+        
+    } catch (err) {
+        console.error('Erro ao buscar calendário:', err);
+        container.innerHTML = `<p style="color:#f87171;padding:1rem;">Erro ao carregar blocos: ${err.message}</p>`;
+        return;
+    }
+
+    container.innerHTML = ''; // clear loading text
+
+    let startWeek = 1;
 
     blocksData.forEach((data, index) => {
         const i = index + 1;
         const block = document.createElement('div');
         block.className = 'calendar-block';
         
-        const startWeek = (i - 1) * weeksPerBlock + 1;
+        const weeksPerBlock = data.weeksPerBlock || 12; // Fallback
         
         const blockStartMs = new Date(data.start).getTime();
         const blockEndMs = new Date(data.end).getTime();
@@ -42,6 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
         }
+        
+        startWeek += weeksPerBlock; // Atualiza para o próximo bloco
 
         block.innerHTML = `
             <div class="block-header">
@@ -68,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Atualização dos Relógios / Timers e das Semanas
-    const globalStartDate = new Date('2026-07-11T00:00:00').getTime();
+    const globalStartDate = blocksData.length > 0 ? new Date(blocksData[0].start).getTime() : new Date().getTime();
     const globalCountdownEl = document.getElementById('global-countdown-timer');
     const globalCountdownTextEl = document.getElementById('global-countdown-text');
     const autoWeeks = document.querySelectorAll('.auto-week');

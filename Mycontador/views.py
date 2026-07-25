@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from home.gitofensive import fetch_contribution_calendar, calculate_streaks
-from .models import habitos
+from .models import habitos, Calendario
 import os
 
 def github_streak(request):
@@ -35,4 +35,18 @@ def api_habitos(request):
         }
         for h in qs
     ]
+    return JsonResponse(data, safe=False)
+
+def api_calendario(request):
+    """API endpoint: retorna os blocos do calendário do DB como JSON."""
+    qs = Calendario.objects.all().order_by('data_inicio')
+    data = []
+    for c in qs:
+        data.append({
+            'id': c.id,
+            'title': c.nome,
+            'weeks': c.quantidade_semanas,
+            'start': c.data_inicio.isoformat() + 'T00:00:00',
+            'end': c.data_fim.isoformat() + 'T23:59:59' if c.data_fim else '',
+        })
     return JsonResponse(data, safe=False)
