@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from home.gitofensive import fetch_contribution_calendar, calculate_streaks
-from .models import habitos, Calendario
+from .models import Habitos, Calendario
 import os
 
 def github_streak(request):
@@ -24,14 +24,15 @@ def aniversario(request):
 
 def api_habitos(request):
     """API endpoint: retorna todos os hábitos do DB como JSON."""
-    qs = habitos.objects.all().values('id', 'Name', 'Description', 'startDate')
+    qs = Habitos.objects.all()
     data = [
         {
-            'id':        str(h['id']),
-            'name':      h['Name'],
-            'desc':      h['Description'],
+            'id':        str(h.id),
+            'name':      h.name,
+            'desc':      h.description,
             # isoformat() → 'YYYY-MM-DD' — fácil de parsear no JS
-            'startDate': h['startDate'].isoformat(),
+            'startDate': h.start_date.isoformat(),
+            'level':     h.level,
         }
         for h in qs
     ]

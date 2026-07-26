@@ -179,7 +179,10 @@ function buildHabitoCard(habito) {
     card.innerHTML = `
         <div class="habito-header">
             <div class="habito-info">
-                <div class="habito-name">${habito.name}</div>
+                <div class="habito-name" style="display: flex; align-items: center; gap: 0.5rem;">
+                    ${habito.name} 
+                    <span class="habito-level-badge" style="font-size:0.65em; background:var(--accent-primary, #6b21a8); padding:0.2rem 0.6rem; border-radius:1rem; color:#fff; font-weight:bold;">${habito.level}</span>
+                </div>
                 <div class="habito-meta">desde ${fmt(start)}</div>
             </div>
             <div class="habito-counter">
