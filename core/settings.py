@@ -29,7 +29,7 @@ load_dotenv(BASE_DIR / '.env')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
-CSRF_TRUSTED_ORIGINS = [ 'https://rodrigo64.up.railway.app/' ]
+CSRF_TRUSTED_ORIGINS = ['https://rodrigo64.up.railway.app']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
