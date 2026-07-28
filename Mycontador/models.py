@@ -38,3 +38,11 @@ class Calendario(models.Model):
         if self.data_inicio and self.quantidade_semanas is not None:
             self.data_fim = self.data_inicio + timedelta(weeks=self.quantidade_semanas)
         super().save(*args, **kwargs)
+
+class Livros(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.CharField(max_length=100)
+    urlimagem = models.URLField()    
+
+    def __str__(self):
+        return self.name
