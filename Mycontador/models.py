@@ -42,6 +42,7 @@ class Calendario(models.Model):
 class Livros(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
+    autor = models.CharField(max_length=100)
     urlimagem = models.URLField()    
 
     def __str__(self):
