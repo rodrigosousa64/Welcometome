@@ -3,6 +3,8 @@ from django.http import JsonResponse
 from home.gitofensive import fetch_contribution_calendar, calculate_streaks
 from .models import Habitos, Calendario
 import os
+from .forms import LivroForm
+from django.shortcuts import render, redirect
 
 def github_streak(request):
     streak_count = 0
@@ -51,3 +53,17 @@ def api_calendario(request):
             'end': c.data_fim.isoformat() + 'T23:59:59' if c.data_fim else '',
         })
     return JsonResponse(data, safe=False)
+
+
+def criar_livro(request):
+    if request.method == 'POST':
+        # Se for um POST, enviamos os dados preenchidos no form para validação
+        form = LivroForm(request.POST)
+        
+        if form.is_valid():
+            form.save() # Salva o livro no banco de dados (SQLite)
+            return redirect('nome_da_url_da_lista_de_livros') # Redireciona para a página de sucesso ou listagem
+    else:
+        # Se for um GET (apenas abriu a página), enviamos o formulário vazio
+        form = LivroForm()
+    return render(request, 'Mylivros/criar_livro.html', {'form': form})
