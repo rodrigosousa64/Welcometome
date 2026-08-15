@@ -51,3 +51,5 @@ def api_calendario(request):
             'end': c.data_fim.isoformat() + 'T23:59:59' if c.data_fim else '',
         })
     return JsonResponse(data, safe=False)
+
+

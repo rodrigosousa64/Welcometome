@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import meuslivros
+from .CrudLivros import meuslivros
 
 
 urlpatterns = [
