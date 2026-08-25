@@ -1,36 +1,44 @@
+/* =========================================
+   DESIGN TOKENS
+   ========================================= */
 :root {
-    /* Cores principais baseadas no Clouding Academy */
     --bg-dark: #000000;
     --bg-surface: #000000;
-    --bg-surface-high: #000000a3;
-    --bg-surface-elevated: #00000020;
-    
+    --bg-surface-high: rgba(0, 0, 0, 0.6);
+    --bg-surface-elevated: rgba(255, 255, 255, 0.03);
+
     --text-primary: #ffffff;
     --text-secondary: #cbc3d7;
     --text-muted: #958ea0;
-    
+
     --primary: #d0bcff;
     --primary-hover: #b18cff;
     --primary-dim: rgba(208, 188, 255, 0.15);
     --primary-border: rgba(208, 188, 255, 0.3);
-    
+
     --accent-green: #7ee787;
     --accent-orange: #ffb869;
     --accent-blue: #84ffff;
-    
+
     --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
     --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
-    
-    --border-color: rgba(73, 68, 84, 0.25);
+
+    --border-color: rgba(73, 68, 84, 0.35);
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    
-    /* Variáveis da UI Antiga para a Sidebar */
+
     --sidebar-width: 260px;
     --collapsed-width: 70px;
+
+    /* Espaçamentos responsivos */
+    --section-px: 1.25rem;
+    --section-py: 3rem;
 }
 
-* {
+/* =========================================
+   RESET
+   ========================================= */
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -39,6 +47,7 @@
 html {
     overflow-x: hidden;
     scroll-behavior: smooth;
+    font-size: 16px;
 }
 
 body {
@@ -51,11 +60,10 @@ body {
     font-family: var(--font-sans);
     line-height: 1.6;
     min-height: 100vh;
-    display: flex; /* Layout em colunas para acomodar a Sidebar */
+    display: flex;
     flex-direction: row;
 }
 
-/* Typography */
 h1, h2, h3, h4 {
     font-family: var(--font-display);
     font-weight: 700;
@@ -73,18 +81,30 @@ a:hover {
 }
 
 /* =========================================
-   SIDEBAR DA UI ANTIGA (Adaptada)
+   SIDEBAR & TOGGLE BUTTON
    ========================================= */
+.nav-toggle { display: none; }
 
-.nav-toggle {
-    display: none;
+/* Botão Toggle Flutuante */
+.toggle-button {
+    position: fixed;
+    cursor: pointer;
+    background: var(--primary);
+    border-radius: 50%;
+    z-index: 2001;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
 }
 
 .sidebar {
     width: var(--sidebar-width);
     height: 100vh;
-    background: var(--bg-surface);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: rgba(0, 0, 0, 0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     position: sticky;
     top: 0;
     overflow-y: auto;
@@ -92,78 +112,108 @@ a:hover {
     border-right: 1px solid var(--border-color);
     flex-shrink: 0;
     z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 2rem;
+    transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.nav-toggle:checked ~ .sidebar {
-    width: var(--collapsed-width);
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 1.5rem 1.25rem;
+    border-bottom: 1px dashed var(--border-color);
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
 }
 
-/* Esconde os textos longos quando o menu encolhe */
-.nav-toggle:checked ~ .sidebar .sidebar-logo,
-.nav-toggle:checked ~ .sidebar h2,
-.nav-toggle:checked ~ .sidebar div,
-.nav-toggle:checked ~ .sidebar .item span,
-.nav-toggle:checked ~ .sidebar .item small {
-    display: none;
+.sidebar-name {
+    color: var(--primary);
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.sidebar-role {
+    color: var(--accent-green);
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    font-weight: bold;
 }
 
 .menu-items {
-    margin-top: 30px;
-    padding: 10px;
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
 .item {
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    cursor: pointer;
+    border-radius: 10px;
+    transition: var(--transition);
     white-space: nowrap;
-    transition: background 0.3s;
-}
-
-.item:hover {
-    background: var(--bg-surface-high);
-    border-left: 4px solid var(--primary);
-}
-
-.item span {
-    font-weight: bold;
-    display: block;
-    color: var(--text-primary);
-}
-
-.item small {
-    color: var(--text-secondary);
 }
 
 .item a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.75rem 1rem;
+    color: var(--text-secondary);
     text-decoration: none;
-    color: inherit;
+    border-radius: 10px;
+    transition: var(--transition);
+}
+
+.item a:hover,
+.item a:focus {
+    background: var(--primary-dim);
+    color: var(--primary);
+    border-left: 3px solid var(--primary);
+    padding-left: calc(1rem - 3px);
+}
+
+.item-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    color: var(--text-muted);
+    transition: color 0.2s;
+}
+
+.item a:hover .item-icon {
+    color: var(--primary);
+}
+
+.item span:not(.material-symbols-outlined):not(.item-icon) {
+    font-weight: 600;
+    display: block;
+    font-size: 0.9rem;
+}
+
+.item small {
+    color: var(--text-muted);
+    font-size: 0.75rem;
     display: block;
 }
 
-/* Botão Toggle da UI Antiga */
-.toggle-button {
+/* =========================================
+   OVERLAY
+   ========================================= */
+.overlay {
+    display: none;
     position: fixed;
-    top: 15px;
-    left: 215px; /* Posição padrão */
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 1999;
     cursor: pointer;
-    width: 30px;
-    height: 30px;
-    background: var(--primary);
-    border-radius: 50%;
-    z-index: 1001;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
-.nav-toggle:checked ~ .toggle-button {
-    left: 20px; /* Posição colapsada */
-}
-
-/* Área de Conteúdo Principal */
+/* =========================================
+   CONTEÚDO PRINCIPAL
+   ========================================= */
 .content {
     flex-grow: 1;
     min-width: 0;
@@ -173,124 +223,30 @@ a:hover {
     overflow-x: hidden;
 }
 
-.overlay {
-    display: none;
-}
-
-/* Responsividade Mobile Sidebar (UI Antiga) */
-@media (max-width: 768px) {
-    body {
-        flex-direction: column;
-    }
-
-    .nav-toggle:checked ~ .overlay {
-        display: block !important;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        backdrop-filter: blur(3px);
-        -webkit-backdrop-filter: blur(3px);
-        z-index: 1999;
-    }
-
-    .sidebar {
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: 85vw;
-        min-width: 260px;
-        max-width: 340px;
-        height: 100vh;
-        z-index: 2000;
-        transform: translateX(100%);
-        border-left: 1px solid var(--border-color);
-        border-right: none;
-    }
-
-    .nav-toggle:checked ~ .sidebar {
-        transform: translateX(0);
-    }
-
-    .nav-toggle:checked ~ .sidebar .item span,
-    .nav-toggle:checked ~ .sidebar .item small,
-    .nav-toggle:checked ~ .sidebar .sidebar-logo,
-    .nav-toggle:checked ~ .sidebar h2,
-    .nav-toggle:checked ~ .sidebar div {
-        display: block; /* Restaura a visibilidade no mobile, pois o drawer abre todo */
-    }
-
-    /* Botão flutuante mobile */
-    .toggle-button {
-        display: flex;
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 60px;
-        height: 60px;
-        z-index: 2001;
-        justify-content: center;
-        align-items: center;
-        top: auto;
-        left: auto;
-        box-shadow: 0 5px 25px rgba(208, 188, 255, 0.4);
-    }
-
-    .toggle-button::before {
-        content: "\2630"; /* Hamburger icon fallback */
-        color: #3c0091;
-        font-size: 2rem;
-    }
-
-    .nav-toggle:checked ~ .toggle-button {
-        background: #ffb4ab; /* Error color */
-        transform: rotate(90deg);
-        box-shadow: 0 5px 25px rgba(255, 180, 171, 0.4);
-    }
-
-    .nav-toggle:checked ~ .toggle-button::before {
-        content: "\2715"; /* Cross icon fallback */
-        color: #000;
-    }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-    :root {
-        --sidebar-width: 200px;
-    }
-    .toggle-button {
-        left: 155px;
-    }
-}
-
-
 /* =========================================
-   ESTILOS DO CLOUDING ACADEMY (Conteúdo Principal)
+   BACKGROUND BLOOM
    ========================================= */
-
-/* Background Effects */
 .bg-bloom {
-    position: absolute;
-    top: -20%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80vw;
-    height: 80vw;
-    max-width: 800px;
-    max-height: 800px;
-    background: radial-gradient(circle, rgba(208,188,255,0.08) 0%, rgba(14,14,14,0) 70%);
-    z-index: -1;
+    position: fixed;
+    top: -10%;
+    right: 10%;
+    width: 60vw;
+    height: 60vw;
+    max-width: 700px;
+    max-height: 700px;
+    background: radial-gradient(circle, rgba(208,188,255,0.06) 0%, rgba(14,14,14,0) 70%);
+    z-index: 0;
     pointer-events: none;
 }
 
-/* Navigation Topo */
+/* =========================================
+   NAVBAR TOPO
+   ========================================= */
 .navbar {
     border-bottom: 1px solid var(--border-color);
-    background-color: rgba(14, 14, 14, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -299,34 +255,28 @@ a:hover {
 .nav-container {
     max-width: 1600px;
     margin: 0 auto;
-    padding: 1rem 3rem;
+    padding: 1rem 1.25rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
 .brand-text {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     letter-spacing: -0.5px;
 }
 
 .nav-links {
-    display: flex;
+    display: none;
     align-items: center;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 .nav-links a {
     color: var(--text-secondary);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 500;
 }
 
@@ -334,7 +284,9 @@ a:hover {
     color: var(--text-primary);
 }
 
-/* Buttons */
+/* =========================================
+   BUTTONS
+   ========================================= */
 button {
     cursor: pointer;
     font-family: var(--font-sans);
@@ -347,53 +299,82 @@ button {
 
 .btn-primary {
     background-color: var(--primary);
-    color: #3c0091; /* text-on-primary */
-    padding: 0.6rem 1.25rem;
-    font-size: 0.95rem;
+    color: #3c0091;
+    padding: 0.55rem 1.1rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border-radius: 8px;
+    display: inline-block;
+    text-decoration: none;
+    line-height: 1.4;
 }
 
 .btn-primary:hover {
     background-color: var(--primary-hover);
     box-shadow: 0 0 20px rgba(208, 188, 255, 0.4);
     transform: translateY(-1px);
+    color: #3c0091;
 }
 
 .btn-secondary {
     background-color: transparent;
     color: var(--text-primary);
-    padding: 0.6rem 1.25rem;
+    padding: 0.55rem 1.1rem;
     border: 1px solid var(--border-color);
+    border-radius: 8px;
+    display: inline-block;
+    text-decoration: none;
+    line-height: 1.4;
 }
 
 .btn-secondary:hover {
     background-color: rgba(255, 255, 255, 0.05);
     border-color: rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
 }
 
 .btn-large {
     padding: 0.8rem 1.8rem;
-    font-size: 1.1rem;
+    font-size: 1rem;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
     border-radius: 0.75rem;
 }
 
-/* Hero Section */
-.hero {
-    padding: 6rem 2rem;
+/* =========================================
+   SECTION HEADER
+   ========================================= */
+.section-header {
     text-align: center;
-    max-width: 900px;
+    margin-bottom: 2.5rem;
+}
+
+.section-header h2 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    margin-bottom: 0.75rem;
+}
+
+.section-header p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+/* =========================================
+   CARD GRID (genérico)
+   ========================================= */
+.card-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    max-width: 1600px;
+    padding: 0;
     margin: 0 auto;
 }
 
-.hero-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-}
-
+/* =========================================
+   BADGE & TEXT GRADIENT
+   ========================================= */
 .badge {
     display: inline-flex;
     align-items: center;
@@ -402,127 +383,57 @@ button {
     color: var(--primary);
     padding: 0.4rem 1rem;
     border-radius: 999px;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 600;
     border: 1px solid var(--primary-border);
-}
-
-.icon-small {
-    font-size: 1.2rem;
-}
-
-.hero-title {
-    font-size: 4rem;
-    letter-spacing: -1px;
+    font-family: var(--font-mono);
 }
 
 .text-gradient {
-    background: linear-gradient(to right, var(--primary), #a078ff);
+    background: linear-gradient(135deg, var(--primary) 0%, #a078ff 50%, var(--accent-blue) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
 }
 
-.hero-subtitle {
-    font-size: 1.25rem;
-    color: var(--text-secondary);
-    max-width: 700px;
-    margin-bottom: 1rem;
-}
-
-/* Features Section */
+/* =========================================
+   FEATURES SECTION & SPACER
+   ========================================= */
 .features-section {
-    padding: 5rem 2rem;
-    background-color: var(--bg-surface);
-    border-top: 1px solid var(--border-color);
+    padding: var(--section-py) var(--section-px);
+    background-color: transparent;
+    border-top: none;
 }
 
-.section-header {
-    text-align: center;
-    margin-bottom: 4rem;
-}
-
-.section-header h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-}
-
-.section-header p {
-    color: var(--text-secondary);
-    font-size: 1.1rem;
-}
-
-/* Grid de Cards (UI Antiga Integrado) */
-.card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-    max-width: 1600px;
-    padding: 0 3rem;
-    margin: 0 auto;
-}
-
-@media (max-width: 900px) {
-    .card-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 600px) {
-    .card-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Auth Showcase Section */
-.auth-showcase {
-    padding: 6rem 2rem;
+.section-spacer {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    padding: 1.5rem 0;
     position: relative;
-}
-
-.auth-card {
-    background-color: var(--bg-surface-elevated);
-    border: 1px solid var(--border-color);
-    border-radius: 22px;
-    padding: 3rem 2.5rem;
     width: 100%;
-    max-width: 420px;
-    text-align: center;
-    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-    position: relative;
-    z-index: 10;
 }
 
-.auth-logo-stage {
-    margin-bottom: 1.5rem;
+.section-spacer::before {
+    content: '';
+    height: 1px;
+    width: 70%;
+    max-width: 800px;
+    background: linear-gradient(90deg, transparent, var(--primary-border), transparent);
 }
 
-.auth-logo-stage .brand-hex {
-    font-size: 3rem;
-    color: var(--primary);
+.section-spacer::after {
+    content: '';
+    position: absolute;
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    box-shadow: 0 0 12px var(--primary);
 }
 
-.auth-card h2 {
-    font-size: 1.8rem;
-    margin-bottom: 0.25rem;
-}
-
-.auth-sub {
-    color: var(--text-secondary);
-    margin-bottom: 2rem;
-    font-size: 0.95rem;
-}
-
-.auth-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    text-align: left;
-}
-
+/* =========================================
+   INPUTS & FORM
+   ========================================= */
 .input-group input,
 .input-group textarea {
     width: 100%;
@@ -543,61 +454,154 @@ button {
     box-shadow: 0 0 0 2px var(--primary-dim);
 }
 
-.row-between {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.85rem;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.checkbox-label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text-secondary);
-    cursor: pointer;
-}
-
-.checkbox-label input[type="checkbox"] {
-    accent-color: var(--primary);
-    width: 1rem;
-    height: 1rem;
-}
-
-.link {
-    color: var(--text-secondary);
-}
-
-.link:hover {
-    color: var(--primary);
-}
-
-.auth-btn {
-    width: 100%;
-    padding: 0.8rem;
-    font-size: 1rem;
-    margin-top: 0.5rem;
-}
-
-/* Footer */
+/* =========================================
+   FOOTER
+   ========================================= */
 footer {
     margin-top: auto;
-    padding: 2rem;
+    padding: 1.5rem;
     text-align: center;
     color: var(--text-muted);
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     border-top: 1px solid var(--border-color);
+    position: relative;
+    z-index: 1;
 }
 
-/* Responsive Overrides Navbar/Hero */
-@media (max-width: 768px) {
-    .hero-title {
-        font-size: 2.8rem;
+/* =========================================
+   MOBILE & TABLET (max-width: 1023px)
+   ========================================= */
+@media (max-width: 1023px) {
+    body {
+        flex-direction: column;
     }
-    
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: min(85vw, 320px);
+        height: 100vh;
+        transform: translateX(100%);
+        border-left: 1px solid var(--border-color);
+        border-right: none;
+        z-index: 2000;
+    }
+
+    .nav-toggle:checked ~ .sidebar {
+        transform: translateX(0);
+    }
+
+    .nav-toggle:checked ~ .overlay {
+        display: block;
+    }
+
+    /* Botão flutuante mobile (fixo a todo momento) */
+    .toggle-button {
+        bottom: 24px;
+        right: 24px;
+        width: 56px;
+        height: 56px;
+        box-shadow: 0 5px 25px rgba(208, 188, 255, 0.45);
+    }
+
+    .toggle-button::before {
+        content: "\2630";
+        color: #3c0091;
+        font-size: 1.8rem;
+        font-weight: bold;
+    }
+
+    .nav-toggle:checked ~ .toggle-button {
+        background: #ffb4ab;
+        transform: rotate(90deg);
+        box-shadow: 0 5px 25px rgba(255, 180, 171, 0.45);
+    }
+
+    .nav-toggle:checked ~ .toggle-button::before {
+        content: "\2715";
+        color: #000000;
+        font-size: 1.6rem;
+    }
+}
+
+/* =========================================
+   DESKTOP (min-width: 1024px)
+   ========================================= */
+@media (min-width: 1024px) {
+    :root {
+        --section-px: 3rem;
+        --section-py: 5rem;
+    }
+
     .nav-links {
+        display: flex;
+    }
+
+    .sidebar {
+        transform: translateX(0) !important;
+    }
+
+    .overlay {
+        display: none !important;
+    }
+
+    /* Botão toggle desktop */
+    .toggle-button {
+        top: 16px;
+        left: 245px;
+        width: 28px;
+        height: 28px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .toggle-button::before {
+        content: "◀";
+        color: #3c0091;
+        font-size: 0.75rem;
+    }
+
+    /* Quando colapsado no desktop */
+    .nav-toggle:checked ~ .sidebar {
+        width: var(--collapsed-width);
+    }
+
+    .nav-toggle:checked ~ .sidebar .sidebar-brand-text,
+    .nav-toggle:checked ~ .sidebar .item div span,
+    .nav-toggle:checked ~ .sidebar .item div small {
         display: none;
+    }
+
+    .nav-toggle:checked ~ .sidebar .sidebar-brand {
+        justify-content: center;
+        padding: 1.5rem 0.5rem;
+    }
+
+    .nav-toggle:checked ~ .sidebar .item a {
+        justify-content: center;
+        padding: 0.75rem 0;
+    }
+
+    .nav-toggle:checked ~ .toggle-button {
+        left: 55px;
+    }
+
+    .nav-toggle:checked ~ .toggle-button::before {
+        content: "▶";
+    }
+
+    .card-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 24px;
+        padding: 0 var(--section-px);
+    }
+}
+
+/* =========================================
+   LARGE DESKTOP (min-width: 1440px)
+   ========================================= */
+@media (min-width: 1440px) {
+    :root {
+        --section-px: 4rem;
     }
 }

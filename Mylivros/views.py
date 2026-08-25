@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from .models import Livros
 from .forms import LivroForm
 
+@login_required(login_url='/admin/login/')
 def criar_livro(request):
     if request.method == 'POST':
         form = LivroForm(request.POST)

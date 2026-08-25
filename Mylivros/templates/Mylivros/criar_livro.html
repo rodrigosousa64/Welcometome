@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'Mylivros/meuslivros.css' %}?v=2.0">
+{% endblock %}
+
+{% block content %}
+<div class="books-section">
+    <div class="books-header">
+        <div class="badge" style="margin-bottom: 0.5rem;">> NOVO_REGISTRO</div>
+        <h1>Adicionar Livro</h1>
+        <p>Cadastre uma nova leitura na sua biblioteca pessoal</p>
+    </div>
+
+    <div class="book-form-card">
+        <form method="POST" class="auth-form book-form">
+            {% csrf_token %}
+            
+            <div class="input-group">
+                <label for="id_name" class="form-label">Título do Livro</label>
+                <input type="text" name="name" id="id_name" required placeholder="Ex: Hábitos Atômicos" value="{{ form.name.value|default:'' }}">
+            </div>
+
+            <div class="input-group">
+                <label for="id_autor" class="form-label">Autor</label>
+                <input type="text" name="autor" id="id_autor" required placeholder="Ex: James Clear" value="{{ form.autor.value|default:'' }}">
+            </div>
+
+            <div class="input-group">
+                <label for="id_urlimagem" class="form-label">URL da Capa (Imagem)</label>
+                <input type="url" name="urlimagem" id="id_urlimagem" placeholder="https://m.media-amazon.com/images/..." value="{{ form.urlimagem.value|default:'' }}">
+            </div>
+
+            <div class="input-group">
+                <label for="id_description" class="form-label">Descrição Breve / Resumo</label>
+                <textarea name="description" id="id_description" rows="3" placeholder="Principais aprendizados...">{{ form.description.value|default:'' }}</textarea>
+            </div>
+
+            <div class="form-row-checkbox">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="lido" id="id_lido" {% if form.lido.value %}checked{% endif %}>
+                    <span>Marcar como Lido</span>
+                </label>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary btn-large" style="width: 100%;">
+                    <span class="material-symbols-outlined icon-small">save</span>
+                    Salvar Livro
+                </button>
+                <a href="{% url 'meuslivros' %}" class="btn-secondary" style="text-align: center; width: 100%;">
+                    Voltar para a Lista
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

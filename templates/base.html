@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rodrigo Sousa - Portfólio</title>
+    <title>Rodrigo Sousa – Desenvolvedor Python & Django</title>
+    <meta name="description" content="Portfólio de Rodrigo Sousa Barbosa, estudante de Engenharia da Computação e desenvolvedor Python/Django. Confira meus projetos e entre em contato.">
     <link rel="icon" type="image/png" href="{% static 'favicon.png' %}">
-    <link rel="stylesheet" href="{% static 'base.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}?v=2.2">
     
     <!-- Fontes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,33 +21,34 @@
     <!-- Checkbox invisível usado para a lógica de abrir/fechar o menu via CSS puro -->
     <input type="checkbox" id="nav-toggle" class="nav-toggle">
     
-    <!-- Botão que controla o checkbox -->
-    <label for="nav-toggle" class="toggle-button"></label>
+    <!-- Botão flutuante de menu que fica presente a todo momento na tela -->
+    <label for="nav-toggle" class="toggle-button" aria-label="Alternar Menu"></label>
 
     <!-- Sidebar Principal -->
     <aside class="sidebar">
         <!-- ÁREA DO LOGO E NOME -->
-        <div style="padding: 20px; text-align: center; border-bottom: 1px dashed var(--border-color); margin-top: 10px; margin-bottom: 15px;">
+        <div class="sidebar-brand">
             <div class="sidebar-logo">
-                <span class="material-symbols-outlined brand-hex" style="font-size: 3rem; color: var(--primary);">code</span>
+                <span class="material-symbols-outlined" style="font-size: 2rem; color: var(--primary);">code</span>
             </div>
-            <h2 style="color: var(--primary); margin: 0; font-family: var(--font-display); font-size: 1.5rem; margin-top: 10px;">> RODRIGO</h2>
-            <div style="color: var(--accent-green); font-size: 0.8rem; margin-top: 8px; font-weight: bold; font-family: var(--font-mono); line-height: 1.3;">// Desenvolvedor</div>
+            <div class="sidebar-brand-text">
+                <h2 class="sidebar-name">> RODRIGO</h2>
+                <div class="sidebar-role">// Desenvolvedor</div>
+            </div>
         </div>
 
         <!-- MENU DE NAVEGAÇÃO -->
-        <nav class="menu-items" style="margin-top: 0;">
-            <div class="item"><a href="{% url 'home' %}"><span>Página Inicial</span> <small>Resumo e introdução</small></a></div>
-            <div class="item"><a href="{% url 'home' %}#projetos"><span>Projetos</span> <small>Trabalhos recentes</small></a></div>
-            <div class="item"><a href="{% url 'home' %}#contato"><span>Contato</span> <small>Vamos conversar</small></a></div>
-            <div class="item"><a href="{% url 'github_streak' %}"><span>Pessoal</span><small>Meus objetivos</small></a></div>
-
-            <div class="item"><a href="{% url 'meuslivros' %}"><span>Livros</span><small>Meus livros</small></a></div>
+        <nav class="menu-items" aria-label="Navegação principal">
+            <div class="item"><a href="{% url 'home' %}"><span class="material-symbols-outlined item-icon">home</span><div><span>Página Inicial</span> <small>Resumo e introdução</small></div></a></div>
+            <div class="item"><a href="{% url 'home' %}#projetos"><span class="material-symbols-outlined item-icon">folder_open</span><div><span>Projetos</span> <small>Trabalhos recentes</small></div></a></div>
+            <div class="item"><a href="{% url 'home' %}#contato"><span class="material-symbols-outlined item-icon">mail</span><div><span>Contato</span> <small>Vamos conversar</small></div></a></div>
+            <div class="item"><a href="{% url 'github_streak' %}"><span class="material-symbols-outlined item-icon">person</span><div><span>Pessoal</span><small>Meus objetivos</small></div></a></div>
+            <div class="item"><a href="{% url 'meuslivros' %}"><span class="material-symbols-outlined item-icon">menu_book</span><div><span>Livros</span><small>Meus livros lidos</small></div></a></div>
         </nav>
     </aside>
 
     <!-- Fundo escuro que aparece no mobile quando o menu está aberto -->
-    <div class="overlay"></div>
+    <label for="nav-toggle" class="overlay"></label>
 
     <!-- Área de Conteúdo Principal -->
     <main class="content">
@@ -54,7 +56,7 @@
         <div class="bg-bloom"></div>
 
         <!-- Navegação Topo -->
-        <nav class="navbar">
+        <nav class="navbar" aria-label="Barra de navegação">
             <div class="nav-container">
                 <div class="logo">
                     <span class="brand-text">Rodrigo Sousa Barbosa</span>
@@ -63,23 +65,19 @@
                     <a href="{% url 'home' %}#sobre">Sobre Mim</a>
                     <a href="{% url 'home' %}#projetos">Projetos</a>
                     <a href="{% url 'home' %}#contato">Contato</a>
-                
-                   
-                    <button class="btn-primary" onclick="window.location.href='#contato'">Fale Comigo</button>
+                    <a href="{% url 'github_streak' %}">Pessoal</a>
+                    <a href="{% url 'meuslivros' %}">Livros</a>
+                    <a href="{% url 'home' %}#contato" class="btn-primary">Fale Comigo</a>
                 </div>
             </div>
         </nav>
 
         <!-- ========================================== -->
-        <!-- INÍCIO DO SLOT DE CONTEÚDO DINÂMICO (YIELD)  -->
+        <!-- INÍCIO DO SLOT DE CONTEÚDO DINÂMICO        -->
         <!-- ========================================== -->
         <div id="main-content-slot">
             {% block content %}
-
             {% endblock %}
-            
-            <!-- O conteúdo das páginas específicas (como home, sobre, etc) entrará aqui. -->
-
         </div>
         <!-- ========================================== -->
         <!-- FIM DO SLOT DE CONTEÚDO DINÂMICO           -->
