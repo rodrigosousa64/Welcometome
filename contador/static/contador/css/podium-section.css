@@ -1,0 +1,157 @@
+/* ============================================================
+   PODIUM SECTION — Chips compactos (versão simplificada)
+   Usa variáveis do base.css: --bg-surface, --primary, etc.
+   ============================================================ */
+
+/* ── Seção wrapper ─────────────────────────────────────────── */
+.podium-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+/* ── Chip individual ───────────────────────────────────────── */
+.podium-chip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-surface-high);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    gap: 1rem;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Linha accent esquerda por rank */
+.podium-chip::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    border-radius: 10px 0 0 10px;
+}
+
+.podium-chip.rank-1::before { background: var(--accent-green); }
+.podium-chip.rank-2::before { background: #00e5ff; }
+.podium-chip.rank-3::before { background: var(--accent-orange); }
+
+.podium-chip:hover {
+    background: var(--bg-surface-elevated);
+    transform: translateX(3px);
+}
+
+.podium-chip.rank-1:hover { border-color: rgba(126, 231, 135, 0.4); box-shadow: 0 0 20px -6px rgba(126,231,135,0.25); }
+.podium-chip.rank-2:hover { border-color: rgba(0, 229, 255, 0.4);   box-shadow: 0 0 20px -6px rgba(0,229,255,0.25); }
+.podium-chip.rank-3:hover { border-color: rgba(255, 184, 105, 0.4); box-shadow: 0 0 20px -6px rgba(255,184,105,0.25); }
+
+/* ── Lado esquerdo: badge + nome ───────────────────────────── */
+.podium-chip-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.podium-rank-badge {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 0.2rem 0.45rem;
+    flex-shrink: 0;
+    letter-spacing: 0.5px;
+}
+
+.rank-1 .podium-rank-badge { color: var(--accent-green); border-color: rgba(126,231,135,0.3); }
+.rank-2 .podium-rank-badge { color: #00e5ff;             border-color: rgba(0,229,255,0.3); }
+.rank-3 .podium-rank-badge { color: var(--accent-orange); border-color: rgba(255,184,105,0.3); }
+
+.podium-chip-name {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.podium-chip-meta {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    margin-top: 0.1rem;
+}
+
+/* ── Lado direito: valor + mini-heatmap ────────────────────── */
+.podium-chip-right {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    flex-shrink: 0;
+}
+
+.podium-chip-value {
+    font-family: var(--font-mono);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+    white-space: nowrap;
+    text-align: right;
+    min-width: 56px;
+}
+
+.rank-1 .podium-chip-value { color: var(--accent-green); }
+.rank-2 .podium-chip-value { color: #00e5ff; }
+.rank-3 .podium-chip-value { color: var(--accent-orange); }
+
+.podium-unit {
+    font-size: 0.65rem;
+    font-weight: 400;
+    color: var(--text-muted);
+}
+
+/* ── Mini-heatmap (8 semanas × 7 dias) ────────────────────── */
+.podium-mini-heatmap {
+    display: flex;
+    gap: 2px;
+    /* Colunas injetadas via JS */
+}
+
+.podium-mini-heatmap .pm-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.podium-mini-heatmap .pm-cell {
+    width: 7px;
+    height: 7px;
+    border-radius: 1px;
+    flex-shrink: 0;
+}
+
+.pm-cell.pm-empty   { background: transparent; }
+.pm-cell.pm-inactive{ background: var(--bg-surface-elevated); }
+.pm-cell.pm-active-1{ background: #1a4220; }
+.pm-cell.pm-active-2{ background: #226227; }
+.pm-cell.pm-active-3{ background: #2ea043; }
+.pm-cell.pm-active-4{ background: var(--accent-green); }
+
+/* ── Responsividade ─────────────────────────────────────────── */
+@media (max-width: 600px) {
+    /* Oculta mini-heatmap em telas pequenas para não quebrar */
+    .podium-mini-heatmap { display: none; }
+
+    .podium-chip-value { font-size: 1.1rem; min-width: 44px; }
+
+    .podium-chip-name  { font-size: 0.8rem; }
+}

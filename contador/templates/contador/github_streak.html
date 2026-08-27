@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'contador/css/github_streak.css' %}?v=1.2">
+    <link rel="stylesheet" href="{% static 'contador/css/dashboard-grid.css' %}">
+    <link rel="stylesheet" href="{% static 'contador/css/analytics.css' %}">
+    <link rel="stylesheet" href="{% static 'contador/css/header-section.css' %}">
+    <link rel="stylesheet" href="{% static 'contador/css/podium-section.css' %}">
+
+    <link rel="stylesheet" href="{% static 'contador/css/habitos-section.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="dashboard-hub">
+    {% include 'contador/partials/header-section.html' %}
+
+    {% include 'contador/partials/podium-section.html' %}
+    {% include 'contador/partials/habitos-section.html' %}
+    {% comment %} {% include 'contador/telemetry-grid.html' %} {% endcomment %}
+  
+
+      {% comment %} {% include 'contador/partials/analytics-section.html' %} {% endcomment %}
+
+</main>
+
+<script src="{% static 'contador/js/header-section.js' %}?v=1.1"></script>
+<script src="{% static 'contador/js/podium.js' %}?v=1.1"></script>
+
+<script src="{% static 'contador/js/habitos-section.js' %}?v=1.1"></script>
+{% endblock %}

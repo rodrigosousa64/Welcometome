@@ -1,0 +1,17 @@
+django_migrations
+django_content_type
+auth_permission
+auth_group
+auth_group_permissions
+Mycontador_habitos
+auth_user_groups
+auth_user_user_permissions
+auth_user
+django_admin_log
+django_session
+Mycontador_calendariosemana
+Mylivros_livros
+contador_calendario
+Mycontador_calendario
+contador_habitos
+livros_livros

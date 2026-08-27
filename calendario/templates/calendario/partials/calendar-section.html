@@ -1,0 +1,39 @@
+
+<main class="calendar-page">
+    {% comment %} <div class="calendar-page-header">
+        <div class="badge" style="margin-bottom: 1rem;">
+            <span class="material-symbols-outlined icon-small">calendar_month</span>
+            <span>Planejamento a Longo Prazo</span>
+        </div>
+        <h1>Calendário de <span class="text-gradient">Metas</span></h1>
+        <p>10 Blocos de 12 Semanas (Aproximadamente 3 Meses cada)</p>
+    </div> {% endcomment %}
+
+    <div class="global-countdown-container" id="global-countdown-container">
+        <h2 id="global-countdown-text">Calculando...</h2>
+        <div id="global-countdown-timer" class="countdown-timer">--d --h --m --s</div>
+    </div>
+
+    <!-- Container onde os blocos serão injetados via JS -->
+    <div id="calendar-blocks-container" class="calendar-macro-grid" data-is-admin="{{ request.user.is_superuser|yesno:'true,false' }}">
+        <!-- JS irá renderizar o calendário aqui -->
+    </div>
+
+    <!-- Modal Dialog para detalhes da semana -->
+    <dialog id="week-modal" class="week-dialog">
+        <div class="dialog-content">
+            <button class="dialog-close-btn" id="close-dialog-btn" aria-label="Fechar">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="dialog-header">
+                <h3 id="dialog-week-title">Semana 1</h3>
+                <span id="dialog-week-badge" class="milestone-badge-dialog" style="display: none;">🎯 MARCO</span>
+            </div>
+            <div class="dialog-body">
+                <label for="dialog-objective-input" class="dialog-label">Micro-objetivo da Semana:</label>
+                <textarea id="dialog-objective-input" class="objective-input" placeholder="Defina o objetivo da semana..."></textarea>
+                <div id="dialog-objective-display" class="objective-display" style="display:none;"></div>
+            </div>
+        </div>
+    </dialog>
+</main>

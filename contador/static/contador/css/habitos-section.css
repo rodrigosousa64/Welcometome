@@ -1,0 +1,287 @@
+/* ============================================================
+   HABITOS CALENDAR — Heatmap estilo GitHub por hábito/contador
+   Usa as variáveis de: base.css e calendar.css
+   ============================================================ */
+
+/* ── Seção wrapper ─────────────────────────────────────────── */
+.habitos-section {
+    padding: 1.5rem 0;
+}
+
+.habitos-section-title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px dashed var(--border-color);
+}
+
+/* ── Grid de cards de hábitos ──────────────────────────────── */
+.habitos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1rem;
+}
+
+/* ── Card individual ───────────────────────────────────────── */
+.habito-card {
+    background: var(--bg-surface-high);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1rem 1.1rem 0.9rem;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.habito-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--accent-green) 100%);
+    border-radius: 12px 12px 0 0;
+}
+
+.habito-card:hover {
+    border-color: var(--primary-border);
+    box-shadow: 0 0 30px -8px rgba(208, 188, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+/* ── Header do card ────────────────────────────────────────── */
+.habito-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 0.85rem;
+    gap: 0.5rem;
+}
+
+.habito-info { flex: 1 1 auto; }
+
+.habito-name {
+    font-family: var(--font-display);
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.3;
+}
+
+.habito-meta {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+}
+
+/* Contador de dias — destaque */
+.habito-counter {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    flex-shrink: 0;
+}
+
+.habito-days {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--accent-green);
+    line-height: 1;
+}
+
+.habito-days-label {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    text-align: right;
+}
+
+/* ── Heatmap ───────────────────────────────────────────────── */
+.habito-heatmap-wrap {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+    padding-bottom: 4px;
+    /* Scroll automático para a direita (mais recente) */
+}
+
+.habito-heatmap-wrap::-webkit-scrollbar { height: 3px; }
+.habito-heatmap-wrap::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+/* Container interno com largura min-content para scroll */
+.habito-heatmap-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: max-content;
+}
+
+/* Linha dos meses */
+.hm-months-row {
+    display: flex;
+    padding-left: 22px;
+    margin-bottom: 1px;
+}
+
+.hm-month-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    user-select: none;
+    white-space: nowrap;
+    /* largura definida via JS */
+}
+
+/* Body: dias da semana + colunas */
+.hm-body {
+    display: flex;
+    gap: 0;
+}
+
+.hm-weekdays {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-right: 4px;
+}
+
+.hm-wd-label {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    color: var(--text-muted);
+    height: 10px;
+    line-height: 10px;
+    width: 18px;
+    text-align: right;
+    user-select: none;
+}
+
+/* Colunas de semanas */
+.hm-weeks {
+    display: flex;
+    gap: 2px;
+}
+
+.hm-week-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* ── Células ────────────────────────────────────────────────── */
+.hm-cell {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    cursor: default;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.hm-cell.empty  { background: transparent; pointer-events: none; }
+.hm-cell.future { background: transparent; pointer-events: none; }
+
+/* Dias sem atividade (antes do início do contador) */
+.hm-cell.inactive { background: var(--bg-surface-elevated); }
+
+/* Dias ATIVOS (dentro do período do contador — todos são "contribuições") */
+/* Gradiente de intensidade baseado em quão recente é o dia */
+.hm-cell.active-1 { background: #1a4220; }
+.hm-cell.active-2 { background: #226227; }
+.hm-cell.active-3 { background: #2ea043; }
+.hm-cell.active-4 { background: var(--accent-green); }
+
+/* Hoje — destaque com outline do primary */
+.hm-cell.today {
+    outline: 1px solid var(--primary);
+    outline-offset: 1px;
+}
+
+/* Hover interativo */
+.hm-cell:not(.empty):not(.future):not(.inactive):hover {
+    transform: scale(1.5);
+    box-shadow: 0 0 6px rgba(126, 231, 135, 0.7);
+    z-index: 5;
+    position: relative;
+}
+
+/* ── Rodapé do card ────────────────────────────────────────── */
+.habito-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.65rem;
+    padding-top: 0.6rem;
+    border-top: 1px dashed var(--border-color);
+}
+
+.habito-desc {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    flex: 1 1 auto;
+    line-height: 1.4;
+}
+
+.habito-start-badge {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--primary);
+    background: var(--primary-dim);
+    border: 1px solid var(--primary-border);
+    border-radius: 999px;
+    padding: 0.15rem 0.55rem;
+    flex-shrink: 0;
+    margin-left: 0.5rem;
+    white-space: nowrap;
+}
+
+/* ── Tooltip ────────────────────────────────────────────────── */
+.hm-tooltip {
+    position: fixed;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--primary-border);
+    border-radius: 7px;
+    padding: 0.35rem 0.65rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--text-secondary);
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.12s ease, transform 0.12s ease;
+    z-index: 9999;
+    white-space: nowrap;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+.hm-tooltip.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.hm-tooltip strong { color: var(--accent-green); }
+
+/* ── Responsividade ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .habitos-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .habito-card { padding: 0.85rem 0.9rem 0.75rem; }
+    .habito-days { font-size: 1.3rem; }
+    .habito-name { font-size: 0.85rem; }
+}

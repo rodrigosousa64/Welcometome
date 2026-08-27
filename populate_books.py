@@ -3,7 +3,7 @@ import django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 django.setup()
 
-from Mylivros.models import Livros
+from livros.models import Livros
 
 books = [
     {"name": "A coragem de ser imperfeito", "urlimagem": "https://m.media-amazon.com/images/I/51x5aXdYW-L._SY445_SX342_ML2_.jpg"},

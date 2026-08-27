@@ -1,0 +1,109 @@
+/* ==========================================================================
+   SEÇÃO 3: ANALYTIC CORE (Donut Chart)
+   ========================================================================== */
+.analytic-core {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.donut-container {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    flex-shrink: 0;
+}
+
+.donut-chart {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    /* Pure CSS Donut Chart representation */
+    background: conic-gradient(
+        var(--accent-green) 0% 45%,
+        var(--accent-blue) 45% 75%,
+        var(--accent-amber) 75% 90%,
+        var(--accent-gray) 90% 100%
+    );
+    /* Creates the hole in the middle */
+    mask: radial-gradient(transparent 55%, black 56%);
+    -webkit-mask: radial-gradient(transparent 55%, black 56%);
+}
+
+.donut-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.donut-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+    font-family: var(--font-mono);
+}
+
+.donut-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.legend-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.legend-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.legend-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+}
+
+.legend-color {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    display: inline-block;
+    opacity: 0.9;
+}
+
+.color-green { background-color: var(--accent-green); }
+.color-blue  { background-color: var(--accent-blue); }
+.color-amber { background-color: var(--accent-amber); }
+.color-gray  { background-color: var(--accent-gray); }
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (Media Queries)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .analytic-core {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2rem;
+    }
+}

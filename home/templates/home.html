@@ -6,7 +6,8 @@
     <link rel="stylesheet" href="{% static 'projetos.css' %}?v=2.0">
     <link rel="stylesheet" href="{% static 'contato.css' %}?v=2.0">
     <link rel="stylesheet" href="{% static 'sobre.css' %}?v=2.0">
-    <link rel="stylesheet" href="{% static 'Mycontador/css/podium-section.css' %}?v=2.0">
+    <link rel="stylesheet" href="{% static 'contador/css/podium-section.css' %}?v=2.0">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 {% endblock %}
 
@@ -64,6 +65,8 @@
 
 <div class="section-spacer"></div>
 
+
+
 <!-- Ofensivas & Pódio Section -->
 <section id="Ofensivas" class="ofensivas-wrapper">
     <div class="section-header" style="margin-bottom: 1.5rem;">
@@ -71,7 +74,7 @@
         <h2>Minhas Ofensivas & Hábitos</h2>
         <p>Monitoramento contínuo de produtividade, estudos e código diário.</p>
     </div>
-    {% include 'Mycontador/partials/podium-section.html' %}
+    {% include 'contador/partials/podium-section.html' %}
 </section>
 
 <div class="section-spacer"></div>
@@ -89,7 +92,8 @@
 <!-- Contato Section -->
 {% include 'contato.html' %}
 
-<script src="{% static 'Mycontador/js/podium.js' %}?v=1.1"></script>
-<script src="{% static 'Mycontador/js/cycle-telemetry.js' %}?v=1.1"></script>
+<script src="{% static 'contador/js/podium.js' %}?v=1.1"></script>
+<script src="{% static 'contador/js/cycle-telemetry.js' %}?v=1.1"></script>
+
 
 {% endblock %}

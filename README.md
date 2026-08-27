@@ -52,18 +52,18 @@ Welcometome/
 ├── home/                        # App da página inicial
 │   ├── gitofensive.py           # Módulo de integração com GitHub GraphQL API
 │   └── templates/home.html
-├── Mycontador/                  # App do painel pessoal (hábitos + streak)
+├── contador/                  # App do painel pessoal (hábitos + streak)
 │   ├── models.py                # Model: habitos (Name, Description, startDate)
 │   ├── views.py                 # Views: github_streak, aniversario, api_habitos
 │   ├── urls.py                  # Rotas do painel
-│   ├── templates/Mycontador/
+│   ├── templates/contador/
 │   │   ├── github_streak.html   # Template principal do dashboard
 │   │   └── partials/            # Componentes HTML modulares
 │   │       ├── header-section.html
 │   │       ├── podium-section.html
 │   │       ├── habitos-section.html
 │   │       └── calendar-section.html
-│   └── static/Mycontador/
+│   └── static/contador/
 │       ├── css/                 # Estilos por seção (modular)
 │       │   ├── github_streak.css
 │       │   ├── dashboard-grid.css
@@ -78,7 +78,7 @@ Welcometome/
 │           ├── calendar-section.js
 │           ├── habitos-section.js
 │           └── aniversario.js
-├── Mylivros/                    # App de registro de livros
+├── livros/                    # App de registro de livros
 ├── static/                      # Arquivos estáticos globais
 ├── templates/                   # Templates base globais
 ├── IniciarSistema.bat           # Script de inicialização rápida (Windows)
