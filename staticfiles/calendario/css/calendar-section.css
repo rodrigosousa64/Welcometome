@@ -1,0 +1,332 @@
+/* ── Estilos da Seção do Calendário de 12 Semanas (Grid + Modal) ── */
+
+:root {
+    --cor-sucesso: #2ea043; /* Github Green */
+    --cor-vazio: #ebedf0; /* Github Empty */
+    --cor-atual: #7c3aed; /* Purple Pulse */
+}
+
+/* Modo escuro - fallback de cores se estiver em dark mode */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --cor-vazio: #161b22;
+        --cor-sucesso: #3fb950;
+    }
+}
+
+.calendar-page {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* ── Container Global (Opcional, se mantiver timers no topo) ── */
+.global-countdown-container {
+    display: none; /* Escondendo pois o progress bar fará este papel */
+}
+
+/* ── Visão Macro: Grid de Blocos ── */
+.calendar-macro-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+/* Bloco de 12 Semanas (Card) */
+.calendar-block {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Banner do Bloco */
+.block-header-banner {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(124, 58, 237, 0.08));
+    border-bottom: 1px solid var(--border-color);
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.banner-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.block-subtitle-small {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--accent-blue);
+    text-transform: uppercase;
+}
+
+.banner-content h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.block-dates {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* Barra de Progresso HTML5 */
+.banner-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.progress-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.block-progress {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.block-progress::-webkit-progress-bar {
+    background-color: var(--border-color);
+    border-radius: 4px;
+}
+
+.block-progress::-webkit-progress-value {
+    background-color: var(--accent-blue);
+    border-radius: 4px;
+}
+
+.block-progress::-moz-progress-bar {
+    background-color: var(--accent-blue);
+    border-radius: 4px;
+}
+
+/* ── Visão Meso: Grade de Semanas (O Mês) ── */
+.weeks-meso-grid {
+    padding: 1.2rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+@media (max-width: 768px) {
+    .weeks-meso-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Card da Semana Individual */
+.week-grid-card {
+    background: var(--surface-light);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    cursor: pointer;
+    transition: 0.3s ease;
+    position: relative;
+}
+
+.week-grid-card:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Destaque da Semana Atual */
+.week-grid-card.current-week {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transform: scale(1.03);
+    border-color: var(--accent-purple);
+    z-index: 10;
+}
+
+/* Estilo para Marcos (Milestones) na visão Meso */
+.week-grid-card.milestone-week {
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    background: linear-gradient(180deg, rgba(245, 158, 11, 0.05) 0%, transparent 50%);
+}
+
+.week-number-small {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── Visão Micro: Flexbox para os Dias (Heatmap) ── */
+.week-days-flex {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}
+
+.day-box {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    background: var(--cor-vazio);
+    transition: all 0.2s;
+}
+
+.day-box.completed-day {
+    background: var(--cor-sucesso);
+}
+
+.day-box.current-day {
+    background: var(--cor-atual);
+    box-shadow: 0 0 8px rgba(124, 58, 237, 0.6);
+    animation: pulse-day 2s infinite;
+}
+
+@keyframes pulse-day {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* ── Modal (Dialog Nativo HTML5) ── */
+.week-dialog {
+    padding: 0;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--surface-color);
+    color: var(--text-primary);
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
+}
+
+.week-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+}
+
+.dialog-content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.dialog-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.dialog-close-btn:hover {
+    background: rgba(255,255,255,0.1);
+    color: var(--text-primary);
+}
+
+.dialog-header {
+    padding: 1.5rem 1.5rem 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.dialog-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.milestone-badge-dialog {
+    background: #f59e0b; /* Amber */
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-full);
+    display: inline-block;
+    width: max-content;
+}
+
+.dialog-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.dialog-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.objective-input {
+    width: 100%;
+    min-height: 100px;
+    background: var(--surface-light);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.95rem;
+    resize: vertical;
+    padding: 0.8rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.objective-input:focus {
+    border-color: var(--accent-blue);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+.objective-display {
+    padding: 1rem;
+    background: var(--surface-light);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    min-height: 100px;
+}
+
+/* Status de Salvamento no Modal */
+.objective-input.saving {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.objective-input.saved {
+    border-color: var(--cor-sucesso);
+    background: rgba(46, 160, 67, 0.05);
+}
