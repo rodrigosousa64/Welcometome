@@ -4,21 +4,61 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const isAdmin = container.getAttribute('data-is-admin') === 'true';
 
-    // Elementos do Modal
-    const modal = document.getElementById('week-modal');
-    const closeBtn = document.getElementById('close-dialog-btn');
-    const modalTitle = document.getElementById('dialog-week-title');
-    const modalBadge = document.getElementById('dialog-week-badge');
-    const modalInput = document.getElementById('dialog-objective-input');
-    const modalDisplay = document.getElementById('dialog-objective-display');
-
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
-            modal.close();
-        });
+    // Toast helper
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('calendar-toast');
+        if (!toast) return;
+        toast.textContent = message;
+        toast.className = `calendar-toast show ${type}`;
+        setTimeout(() => {
+            toast.className = 'calendar-toast';
+        }, 3200);
     }
 
-    container.innerHTML = '<p style="color:var(--text-muted,#888);padding:1rem;">Carregando blocos...</p>';
+    // Elementos do Modal da Semana
+    const weekModal = document.getElementById('week-modal');
+    const closeWeekBtn = document.getElementById('close-dialog-btn');
+    const cancelWeekBtn = document.getElementById('dialog-cancel-week-btn');
+    const saveWeekBtn = document.getElementById('dialog-save-week-btn');
+    const weekTitleDisplay = document.getElementById('dialog-week-title');
+    const weekBadge = document.getElementById('dialog-week-badge');
+    const adminWeekFields = document.getElementById('admin-week-fields');
+    const adminWeekActions = document.getElementById('admin-week-actions');
+    const weekTitleInput = document.getElementById('dialog-week-title-input');
+    const milestoneToggle = document.getElementById('dialog-milestone-toggle');
+    const objectiveInput = document.getElementById('dialog-objective-input');
+    const objectiveDisplay = document.getElementById('dialog-objective-display');
+
+    // Elementos do Modal do Bloco
+    const blockModal = document.getElementById('block-modal');
+    const closeBlockBtn = document.getElementById('close-block-dialog-btn');
+    const cancelBlockBtn = document.getElementById('dialog-cancel-block-btn');
+    const saveBlockBtn = document.getElementById('dialog-save-block-btn');
+    const blockNameInput = document.getElementById('dialog-block-name-input');
+    const blockThemeInput = document.getElementById('dialog-block-theme-input');
+
+    // Fechamento de Modais
+    if (closeWeekBtn) closeWeekBtn.addEventListener('click', () => weekModal.close());
+    if (cancelWeekBtn) cancelWeekBtn.addEventListener('click', () => weekModal.close());
+    if (closeBlockBtn) closeBlockBtn.addEventListener('click', () => blockModal.close());
+    if (cancelBlockBtn) cancelBlockBtn.addEventListener('click', () => blockModal.close());
+
+    // Fechar ao clicar no backdrop do dialog
+    [weekModal, blockModal].forEach(dialog => {
+        if (!dialog) return;
+        dialog.addEventListener('click', (e) => {
+            const rect = dialog.getBoundingClientRect();
+            const isInDialog = (
+                rect.top <= e.clientY && e.clientY <= rect.top + rect.height &&
+                rect.left <= e.clientX && e.clientX <= rect.left + rect.width
+            );
+            if (!isInDialog) {
+                dialog.close();
+            }
+        });
+    });
+
+    container.innerHTML = '<div class="calendar-loading"><div class="spinner"></div><p>Carregando blocos e metas...</p></div>';
 
     let blocksData = [];
     try {
@@ -57,7 +97,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         
     } catch (err) {
         console.error('Erro ao buscar calendário:', err);
-        container.innerHTML = `<p style="color:#f87171;padding:1rem;">Erro ao carregar blocos: ${err.message}</p>`;
+        container.innerHTML = `<div class="calendar-error"><span class="material-symbols-outlined">error</span><p>Erro ao carregar blocos: ${err.message}</p></div>`;
         return;
     }
 
@@ -65,13 +105,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let startWeek = 1;
 
-    // Cache para os dados das semanas para o modal
+    // Caches para acesso rápido
     const weeksCache = {};
+    const blocksCache = {};
 
     blocksData.forEach((data, index) => {
-        const i = index + 1;
+        blocksCache[data.id] = data;
         const block = document.createElement('div');
         block.className = 'calendar-block';
+        block.id = `calendar-block-${data.id}`;
         
         const weeksPerBlock = data.weeksPerBlock || 12;
         
@@ -95,18 +137,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const semanaData = data.semanas.find(s => s.numero_semana === w) || {};
             const weekId = semanaData.id;
-            const isMilestone = semanaData.is_milestone;
+            const isMilestone = Boolean(semanaData.is_milestone);
             const milestoneClass = isMilestone ? 'milestone-week' : '';
             const mainObjective = semanaData.main_objective || '';
-            const weekTitle = semanaData.week_title ? `S${absoluteWeek}: ${semanaData.week_title}` : `Semana ${absoluteWeek}`;
+            const weekTitle = semanaData.week_title || '';
             
-            const internalWeekKey = `week-${weekId || absoluteWeek}`;
+            const internalWeekKey = `week-${weekId || (data.id + '-' + w)}`;
             weeksCache[internalWeekKey] = {
                 id: weekId,
-                title: weekTitle,
-                objective: mainObjective,
-                isMilestone: isMilestone,
-                milestoneLabel: semanaData.week_title
+                blocoId: data.id,
+                numero_semana: w,
+                absoluteWeek: absoluteWeek,
+                week_title: weekTitle,
+                main_objective: mainObjective,
+                is_milestone: isMilestone,
             };
 
             let daysHtml = '';
@@ -116,12 +160,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                 daysHtml += `<div class="day-box auto-day" data-day-start="${dayStartMs}" data-day-end="${dayEndMs}"></div>`;
             }
 
+            const milestoneIndicator = isMilestone ? '<span class="milestone-indicator-star" title="Marco">🎯</span>' : '';
+
             weeksHtml += `
                 <div class="week-grid-card auto-week ${milestoneClass}" 
                      data-week-start="${weekStartMs}" 
                      data-week-end="${weekEndMs}"
-                     data-week-key="${internalWeekKey}">
-                    <span class="week-number-small">S${absoluteWeek}</span>
+                     data-week-key="${internalWeekKey}"
+                     title="${weekTitle ? 'S' + absoluteWeek + ': ' + weekTitle : 'Semana ' + absoluteWeek}">
+                    <div class="week-header-small">
+                        <span class="week-number-small">S${absoluteWeek}</span>
+                        ${milestoneIndicator}
+                    </div>
                     <div class="week-days-flex">
                         ${daysHtml}
                     </div>
@@ -131,12 +181,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         startWeek += weeksPerBlock;
 
+        const editBlockBtnHtml = isAdmin ? `
+            <button type="button" class="btn-edit-block" data-block-id="${data.id}" title="Editar Meta e Título do Bloco">
+                <span class="material-symbols-outlined">edit</span>
+                <span>Editar</span>
+            </button>
+        ` : '';
+
         block.innerHTML = `
             <div class="block-header-banner">
-                <div class="banner-content">
-                    <span class="block-subtitle-small">OBJETIVO PRINCIPAL</span>
-                    <h2>${data.block_theme}</h2>
-                    <span class="block-dates">${data.labelStart} - ${data.labelEnd}</span>
+                <div class="banner-top-row">
+                    <div class="banner-content">
+                        <div class="block-title-row">
+                            <span class="block-subtitle-small">${data.title || 'BLOCO'}</span>
+                            ${editBlockBtnHtml}
+                        </div>
+                        <h2 class="block-theme-title">${data.block_theme}</h2>
+                        <span class="block-dates">${data.labelStart} - ${data.labelEnd}</span>
+                    </div>
                 </div>
                 <div class="banner-progress">
                     <div class="progress-labels">
@@ -153,47 +215,147 @@ document.addEventListener('DOMContentLoaded', async () => {
         container.appendChild(block);
     });
 
+    // Abrir modal de edição do bloco (ADM)
+    if (isAdmin) {
+        document.querySelectorAll('.btn-edit-block').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const blockId = btn.getAttribute('data-block-id');
+                const blockData = blocksCache[blockId];
+                if (!blockData || !blockModal) return;
+
+                blockNameInput.value = blockData.title || '';
+                blockThemeInput.value = blockData.block_theme || '';
+                saveBlockBtn.setAttribute('data-block-id', blockId);
+
+                blockModal.showModal();
+            });
+        });
+
+        // Salvar alterações do Bloco
+        if (saveBlockBtn) {
+            saveBlockBtn.addEventListener('click', async () => {
+                const blockId = saveBlockBtn.getAttribute('data-block-id');
+                if (!blockId) return;
+
+                const newName = blockNameInput.value.trim();
+                const newTheme = blockThemeInput.value.trim();
+
+                if (!newName) {
+                    showToast('Informe o nome do bloco.', 'error');
+                    return;
+                }
+
+                saveBlockBtn.disabled = true;
+                saveBlockBtn.innerHTML = '<span class="material-symbols-outlined icon-small spin">sync</span> Salvando...';
+
+                try {
+                    const res = await fetch('/calendario/api/calendario/bloco/update/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookie('csrftoken')
+                        },
+                        body: JSON.stringify({
+                            bloco_id: blockId,
+                            nome: newName,
+                            block_theme: newTheme
+                        })
+                    });
+
+                    const resData = await res.json();
+                    if (res.ok && resData.status === 'success') {
+                        // Atualizar cache
+                        if (blocksCache[blockId]) {
+                            blocksCache[blockId].title = newName;
+                            blocksCache[blockId].block_theme = newTheme;
+                        }
+
+                        // Atualizar DOM do bloco
+                        const blockElem = document.getElementById(`calendar-block-${blockId}`);
+                        if (blockElem) {
+                            const subtitleElem = blockElem.querySelector('.block-subtitle-small');
+                            const themeElem = blockElem.querySelector('.block-theme-title');
+                            if (subtitleElem) subtitleElem.innerText = newName;
+                            if (themeElem) themeElem.innerText = newTheme || 'Foco e Disciplina';
+                        }
+
+                        blockModal.close();
+                        showToast('Meta do bloco atualizada com sucesso!', 'success');
+                    } else {
+                        showToast(resData.error || 'Erro ao atualizar bloco', 'error');
+                    }
+                } catch (err) {
+                    console.error('Erro ao salvar bloco:', err);
+                    showToast('Falha na comunicação com o servidor', 'error');
+                } finally {
+                    saveBlockBtn.disabled = false;
+                    saveBlockBtn.innerHTML = '<span class="material-symbols-outlined icon-small">save</span> Salvar Bloco';
+                }
+            });
+        }
+    }
+
     // Abrir modal ao clicar no cartão da semana
     document.querySelectorAll('.week-grid-card').forEach(card => {
-        card.addEventListener('click', (e) => {
-            if (!modal) return;
+        card.addEventListener('click', () => {
+            if (!weekModal) return;
             const weekKey = card.getAttribute('data-week-key');
             const data = weeksCache[weekKey];
+            if (!data) return;
 
-            modalTitle.innerText = data.title;
+            const weekHeading = data.week_title 
+                ? `Semana ${data.absoluteWeek}: ${data.week_title}` 
+                : `Semana ${data.absoluteWeek}`;
             
-            if (data.isMilestone) {
-                modalBadge.style.display = 'inline-block';
-                modalBadge.innerText = `🎯 MARCO: ${data.milestoneLabel || 'Decisivo'}`;
+            weekTitleDisplay.innerText = weekHeading;
+            
+            if (data.is_milestone) {
+                weekBadge.style.display = 'inline-flex';
+                weekBadge.innerText = `🎯 MARCO: ${data.week_title || 'Semana Chave'}`;
             } else {
-                modalBadge.style.display = 'none';
+                weekBadge.style.display = 'none';
             }
 
             if (isAdmin) {
-                modalInput.style.display = 'block';
-                modalDisplay.style.display = 'none';
-                modalInput.value = data.objective;
-                modalInput.setAttribute('data-semana-id', data.id || '');
-                modalInput.setAttribute('data-week-key', weekKey);
+                adminWeekFields.style.display = 'flex';
+                adminWeekActions.style.display = 'flex';
+                objectiveInput.style.display = 'block';
+                objectiveDisplay.style.display = 'none';
+
+                weekTitleInput.value = data.week_title || '';
+                milestoneToggle.checked = Boolean(data.is_milestone);
+                objectiveInput.value = data.main_objective || '';
+                
+                saveWeekBtn.setAttribute('data-semana-id', data.id || '');
+                saveWeekBtn.setAttribute('data-week-key', weekKey);
             } else {
-                modalInput.style.display = 'none';
-                modalDisplay.style.display = 'block';
-                modalDisplay.innerHTML = data.objective ? data.objective.replace(/\n/g, '<br>') : '<span style="color:var(--text-muted)">Nenhum objetivo definido.</span>';
+                adminWeekFields.style.display = 'none';
+                adminWeekActions.style.display = 'none';
+                objectiveInput.style.display = 'none';
+                objectiveDisplay.style.display = 'block';
+                objectiveDisplay.innerHTML = data.main_objective 
+                    ? data.main_objective.replace(/\n/g, '<br>') 
+                    : '<span style="color:var(--text-muted)">Nenhum objetivo definido para esta semana.</span>';
             }
 
-            modal.showModal();
+            weekModal.showModal();
         });
     });
 
-    // Setup Textarea Auto-save
-    if (isAdmin && modalInput) {
-        modalInput.addEventListener('blur', async (e) => {
-            const semanaId = e.target.getAttribute('data-semana-id');
-            const weekKey = e.target.getAttribute('data-week-key');
-            const newObjective = e.target.value;
+    // Salvar alterações da Semana (ADM)
+    if (isAdmin && saveWeekBtn) {
+        saveWeekBtn.addEventListener('click', async () => {
+            const semanaId = saveWeekBtn.getAttribute('data-semana-id');
+            const weekKey = saveWeekBtn.getAttribute('data-week-key');
             if (!semanaId) return;
 
-            e.target.classList.add('saving');
+            const newTitle = weekTitleInput.value.trim();
+            const newObjective = objectiveInput.value;
+            const newIsMilestone = milestoneToggle.checked;
+
+            saveWeekBtn.disabled = true;
+            saveWeekBtn.innerHTML = '<span class="material-symbols-outlined icon-small spin">sync</span> Salvando...';
 
             try {
                 const res = await fetch('/calendario/api/calendario/semana/update/', {
@@ -204,23 +366,53 @@ document.addEventListener('DOMContentLoaded', async () => {
                     },
                     body: JSON.stringify({
                         semana_id: semanaId,
-                        main_objective: newObjective
+                        week_title: newTitle,
+                        main_objective: newObjective,
+                        is_milestone: newIsMilestone
                     })
                 });
-                if (res.ok) {
-                    e.target.classList.remove('saving');
-                    e.target.classList.add('saved');
+
+                const resData = await res.json();
+                if (res.ok && resData.status === 'success') {
+                    // Atualizar cache local
                     if (weeksCache[weekKey]) {
-                        weeksCache[weekKey].objective = newObjective; // update cache
+                        weeksCache[weekKey].week_title = newTitle;
+                        weeksCache[weekKey].main_objective = newObjective;
+                        weeksCache[weekKey].is_milestone = newIsMilestone;
                     }
-                    setTimeout(() => e.target.classList.remove('saved'), 2000);
+
+                    // Atualizar card no DOM
+                    const card = document.querySelector(`.week-grid-card[data-week-key="${weekKey}"]`);
+                    if (card) {
+                        if (newIsMilestone) {
+                            card.classList.add('milestone-week');
+                        } else {
+                            card.classList.remove('milestone-week');
+                        }
+
+                        const headerSmall = card.querySelector('.week-header-small');
+                        if (headerSmall) {
+                            const absWeek = weeksCache[weekKey].absoluteWeek;
+                            headerSmall.innerHTML = `
+                                <span class="week-number-small">S${absWeek}</span>
+                                ${newIsMilestone ? '<span class="milestone-indicator-star" title="Marco">🎯</span>' : ''}
+                            `;
+                        }
+
+                        card.setAttribute('title', newTitle ? `S${weeksCache[weekKey].absoluteWeek}: ${newTitle}` : `Semana ${weeksCache[weekKey].absoluteWeek}`);
+                    }
+
+                    weekModal.close();
+                    showToast('Meta da semana salva com sucesso!', 'success');
                 } else {
-                    console.error("Falha ao salvar");
-                    e.target.classList.remove('saving');
+                    showToast(resData.error || 'Erro ao salvar semana', 'error');
                 }
             } catch (err) {
-                console.error(err);
-                e.target.classList.remove('saving');
+                console.error('Erro ao salvar semana:', err);
+                showToast('Falha na comunicação com o servidor', 'error');
+            } finally {
+                saveWeekBtn.disabled = false;
+                saveWeekBtn.innerHTML = '<span class="material-symbols-outlined icon-small">save</span> Salvar Meta';
             }
         });
     }

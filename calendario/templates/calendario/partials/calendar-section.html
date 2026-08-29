@@ -1,39 +1,108 @@
 
 <main class="calendar-page">
-    {% comment %} <div class="calendar-page-header">
-        <div class="badge" style="margin-bottom: 1rem;">
-            <span class="material-symbols-outlined icon-small">calendar_month</span>
-            <span>Planejamento a Longo Prazo</span>
-        </div>
-        <h1>Calendário de <span class="text-gradient">Metas</span></h1>
-        <p>10 Blocos de 12 Semanas (Aproximadamente 3 Meses cada)</p>
-    </div> {% endcomment %}
-
     <div class="global-countdown-container" id="global-countdown-container">
         <h2 id="global-countdown-text">Calculando...</h2>
         <div id="global-countdown-timer" class="countdown-timer">--d --h --m --s</div>
     </div>
 
     <!-- Container onde os blocos serão injetados via JS -->
-    <div id="calendar-blocks-container" class="calendar-macro-grid" data-is-admin="{{ request.user.is_superuser|yesno:'true,false' }}">
+    <div id="calendar-blocks-container" class="calendar-macro-grid" data-is-admin="{% if request.user.is_authenticated and request.user.is_staff or request.user.is_superuser %}true{% else %}false{% endif %}">
         <!-- JS irá renderizar o calendário aqui -->
     </div>
 
-    <!-- Modal Dialog para detalhes da semana -->
+    <!-- Modal Dialog para detalhes e edição da semana -->
     <dialog id="week-modal" class="week-dialog">
         <div class="dialog-content">
             <button class="dialog-close-btn" id="close-dialog-btn" aria-label="Fechar">
                 <span class="material-symbols-outlined">close</span>
             </button>
+            
             <div class="dialog-header">
-                <h3 id="dialog-week-title">Semana 1</h3>
-                <span id="dialog-week-badge" class="milestone-badge-dialog" style="display: none;">🎯 MARCO</span>
+                <div class="dialog-header-left">
+                    <h3 id="dialog-week-title">Semana 1</h3>
+                    <span id="dialog-week-badge" class="milestone-badge-dialog" style="display: none;">🎯 MARCO</span>
+                </div>
             </div>
+
             <div class="dialog-body">
-                <label for="dialog-objective-input" class="dialog-label">Micro-objetivo da Semana:</label>
-                <textarea id="dialog-objective-input" class="objective-input" placeholder="Defina o objetivo da semana..."></textarea>
-                <div id="dialog-objective-display" class="objective-display" style="display:none;"></div>
+                <!-- Seção de Edição exclusiva para ADM -->
+                <div id="admin-week-fields" class="admin-fields-container" style="display: none;">
+                    <div class="dialog-form-group">
+                        <label for="dialog-week-title-input" class="dialog-label">
+                            <span class="material-symbols-outlined icon-small">flag</span> Nome / Título da Meta da Semana
+                        </label>
+                        <input type="text" id="dialog-week-title-input" class="dialog-text-input" placeholder="Ex: Finalizar Senac, Lançar MVP...">
+                    </div>
+
+                    <div class="dialog-form-group">
+                        <label class="toggle-control-label">
+                            <input type="checkbox" id="dialog-milestone-toggle" class="toggle-checkbox">
+                            <span class="toggle-switch"></span>
+                            <span class="toggle-text">Definir esta semana como <strong>Marco (Milestone 🎯)</strong></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Campo de Micro-objetivo -->
+                <div class="dialog-form-group">
+                    <label for="dialog-objective-input" class="dialog-label">
+                        <span class="material-symbols-outlined icon-small">task_alt</span> Micro-objetivo da Semana:
+                    </label>
+                    <textarea id="dialog-objective-input" class="objective-input" placeholder="Defina o micro-objetivo detalhado para esta semana..."></textarea>
+                    <div id="dialog-objective-display" class="objective-display" style="display:none;"></div>
+                </div>
+            </div>
+
+            <!-- Rodapé com ações de salvamento para ADM -->
+            <div id="admin-week-actions" class="dialog-footer" style="display: none;">
+                <button type="button" class="btn-dialog-secondary" id="dialog-cancel-week-btn">Cancelar</button>
+                <button type="button" class="btn-dialog-primary" id="dialog-save-week-btn">
+                    <span class="material-symbols-outlined icon-small">save</span> Salvar Meta
+                </button>
             </div>
         </div>
     </dialog>
+
+    <!-- Modal Dialog para edição do Bloco / Meta Macro (ADM) -->
+    <dialog id="block-modal" class="week-dialog block-dialog">
+        <div class="dialog-content">
+            <button class="dialog-close-btn" id="close-block-dialog-btn" aria-label="Fechar">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+
+            <div class="dialog-header">
+                <div class="dialog-header-left">
+                    <h3 id="dialog-block-modal-title">
+                        <span class="material-symbols-outlined icon-small" style="color: var(--primary);">tune</span> Editar Meta do Bloco
+                    </h3>
+                </div>
+            </div>
+
+            <div class="dialog-body">
+                <div class="dialog-form-group">
+                    <label for="dialog-block-name-input" class="dialog-label">
+                        <span class="material-symbols-outlined icon-small">view_agenda</span> Nome do Bloco
+                    </label>
+                    <input type="text" id="dialog-block-name-input" class="dialog-text-input" placeholder="Ex: Bloco 1 (Q1), Bloco 2...">
+                </div>
+
+                <div class="dialog-form-group">
+                    <label for="dialog-block-theme-input" class="dialog-label">
+                        <span class="material-symbols-outlined icon-small">track_changes</span> Meta / Objetivo Principal das 12 Semanas
+                    </label>
+                    <input type="text" id="dialog-block-theme-input" class="dialog-text-input" placeholder="Ex: Foco e Disciplina / Finalizar MVP / Aprender Rust...">
+                </div>
+            </div>
+
+            <div class="dialog-footer">
+                <button type="button" class="btn-dialog-secondary" id="dialog-cancel-block-btn">Cancelar</button>
+                <button type="button" class="btn-dialog-primary" id="dialog-save-block-btn">
+                    <span class="material-symbols-outlined icon-small">save</span> Salvar Bloco
+                </button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Toast Notification -->
+    <div id="calendar-toast" class="calendar-toast" role="status" aria-live="polite"></div>
 </main>
