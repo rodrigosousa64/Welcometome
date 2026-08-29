@@ -142,59 +142,109 @@ a:hover {
     font-weight: bold;
 }
 
-.menu-items {
-    padding: 0.5rem 0.75rem;
+/* =========================================
+   FILE TREE (VS CODE STYLE)
+   ========================================= */
+.explorer-header {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.file-tree {
+    padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 4px;
-}
-
-.item {
-    border-radius: 10px;
-    transition: var(--transition);
-    white-space: nowrap;
-}
-
-.item a {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 0.75rem 1rem;
-    color: var(--text-secondary);
-    text-decoration: none;
-    border-radius: 10px;
-    transition: var(--transition);
-}
-
-.item a:hover,
-.item a:focus {
-    background: var(--primary-dim);
-    color: var(--primary);
-    border-left: 3px solid var(--primary);
-    padding-left: calc(1rem - 3px);
-}
-
-.item-icon {
-    font-size: 1.25rem;
-    flex-shrink: 0;
-    color: var(--text-muted);
-    transition: color 0.2s;
-}
-
-.item a:hover .item-icon {
-    color: var(--primary);
-}
-
-.item span:not(.material-symbols-outlined):not(.item-icon) {
-    font-weight: 600;
-    display: block;
+    font-family: var(--font-sans);
     font-size: 0.9rem;
 }
 
-.item small {
+.tree-folder {
+    /* Container do details */
+}
+
+/* Esconde o marcador padrão do details no safari/chrome */
+.tree-folder > summary {
+    list-style: none;
+}
+.tree-folder > summary::-webkit-details-marker {
+    display: none;
+}
+
+.tree-folder-title,
+.tree-file {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 1.25rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+    transition: background 0.2s, color 0.2s;
+}
+
+.tree-folder-title:hover,
+.tree-file:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+}
+
+.tree-folder-title .chevron {
+    font-size: 1.1rem;
+    transition: transform 0.2s;
     color: var(--text-muted);
-    font-size: 0.75rem;
-    display: block;
+}
+
+/* Quando details está aberto, a seta vira pra baixo */
+.tree-folder[open] > .tree-folder-title .chevron {
+    transform: rotate(90deg);
+}
+
+.tree-folder-title .folder-icon,
+.tree-file .file-icon {
+    font-size: 1.2rem;
+}
+
+.tree-folder-content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Linha guia (indentação) */
+.tree-folder-content::before {
+    content: '';
+    position: absolute;
+    left: 2rem;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: rgba(255, 255, 255, 0.1);
+    z-index: 0;
+}
+
+/* Indentação do conteúdo nível 1 */
+.tree-folder-content > .tree-file,
+.tree-folder-content > .tree-folder > .tree-folder-title {
+    padding-left: 2.5rem;
+}
+
+/* Indentação do conteúdo nível 2 */
+.tree-folder-content .tree-folder-content > .tree-file {
+    padding-left: 4rem;
+}
+
+.tree-folder-content .tree-folder-content::before {
+    left: 3.2rem;
+}
+
+.folder-name {
+    font-weight: 500;
 }
 
 /* =========================================
@@ -567,8 +617,10 @@ footer {
     }
 
     .nav-toggle:checked ~ .sidebar .sidebar-brand-text,
-    .nav-toggle:checked ~ .sidebar .item div span,
-    .nav-toggle:checked ~ .sidebar .item div small {
+    .nav-toggle:checked ~ .sidebar .explorer-header,
+    .nav-toggle:checked ~ .sidebar .tree-folder-title .folder-name,
+    .nav-toggle:checked ~ .sidebar .tree-folder-title .chevron,
+    .nav-toggle:checked ~ .sidebar .tree-file span:not(.file-icon) {
         display: none;
     }
 
@@ -577,9 +629,17 @@ footer {
         padding: 1.5rem 0.5rem;
     }
 
-    .nav-toggle:checked ~ .sidebar .item a {
+    .nav-toggle:checked ~ .sidebar .tree-folder-title,
+    .nav-toggle:checked ~ .sidebar .tree-file,
+    .nav-toggle:checked ~ .sidebar .tree-folder-content > .tree-file,
+    .nav-toggle:checked ~ .sidebar .tree-folder-content > .tree-folder > .tree-folder-title,
+    .nav-toggle:checked ~ .sidebar .tree-folder-content .tree-folder-content > .tree-file {
+        padding-left: 0;
         justify-content: center;
-        padding: 0.75rem 0;
+    }
+    
+    .nav-toggle:checked ~ .sidebar .tree-folder-content::before {
+        display: none;
     }
 
     .nav-toggle:checked ~ .toggle-button {

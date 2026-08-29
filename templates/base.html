@@ -37,14 +37,47 @@
             </div>
         </div>
 
+        <!-- EXPLORER HEADER -->
+        <div class="explorer-header">NAVEGAÇÃO</div>
+        
         <!-- MENU DE NAVEGAÇÃO -->
-        <nav class="menu-items" aria-label="Navegação principal">
-            <div class="item"><a href="{% url 'home' %}"><span class="material-symbols-outlined item-icon">home</span><div><span>Página Inicial</span> <small>Resumo e introdução</small></div></a></div>
-            <div class="item"><a href="{% url 'home' %}#projetos"><span class="material-symbols-outlined item-icon">folder_open</span><div><span>Projetos</span> <small>Trabalhos recentes</small></div></a></div>
-            <div class="item"><a href="{% url 'home' %}#contato"><span class="material-symbols-outlined item-icon">mail</span><div><span>Contato</span> <small>Vamos conversar</small></div></a></div>
-            <div class="item"><a href="{% url 'github_streak' %}"><span class="material-symbols-outlined item-icon">person</span><div><span>Pessoal</span><small>Meus objetivos</small></div></a></div>
-            <div class="item"><a href="{% url 'calendario_home' %}"><span class="material-symbols-outlined item-icon">calendar_month</span><div><span>Calendário</span><small>12 Semanas</small></div></a></div>
-            <div class="item"><a href="{% url 'meuslivros' %}"><span class="material-symbols-outlined item-icon">menu_book</span><div><span>Livros</span><small>Meus livros lidos</small></div></a></div>
+        <nav class="file-tree" aria-label="Navegação principal">
+            <a href="{% url 'home' %}" class="tree-file">
+                <span class="material-symbols-outlined file-icon" style="color: var(--text-muted);">home</span>
+                <span>Página Inicial</span>
+            </a>
+            
+            <a href="{% url 'home' %}#projetos" class="tree-file">
+                <span class="material-symbols-outlined file-icon" style="color: var(--text-muted);">folder_open</span>
+                <span>Projetos</span>
+            </a>
+
+            <a href="{% url 'home' %}#contato" class="tree-file">
+                <span class="material-symbols-outlined file-icon" style="color: var(--text-muted);">mail</span>
+                <span>Contato</span>
+            </a>
+
+            <details class="tree-folder" open>
+                <summary class="tree-folder-title">
+                    <span class="material-symbols-outlined chevron">chevron_right</span>
+                    <span class="material-symbols-outlined folder-icon" style="color: var(--primary);">folder</span>
+                    <span class="folder-name">Pessoal</span>
+                </summary>
+                <div class="tree-folder-content">
+                    <a href="{% url 'github_streak' %}" class="tree-file">
+                        <span class="material-symbols-outlined file-icon" style="color: var(--text-muted);">person</span>
+                        <span>Objetivos</span>
+                    </a>
+                    <a href="{% url 'calendario_home' %}" class="tree-file">
+                        <span class="material-symbols-outlined file-icon" style="color: var(--text-muted);">calendar_month</span>
+                        <span>Calendário</span>
+                    </a>
+                    <a href="{% url 'meuslivros' %}" class="tree-file">
+                        <span class="material-symbols-outlined file-icon" style="color: var(--text-muted);">menu_book</span>
+                        <span>Meus Livros</span>
+                    </a>
+                </div>
+            </details>
         </nav>
     </aside>
 
