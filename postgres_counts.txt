@@ -1,7 +1,0 @@
-Mycontador_habitos: 2
-contador_habitos: 0
-Mycontador_calendario: 10
-contador_calendario: 0
-Mycontador_calendariosemana: 0
-Mylivros_livros: 16
-livros_livros: 14
